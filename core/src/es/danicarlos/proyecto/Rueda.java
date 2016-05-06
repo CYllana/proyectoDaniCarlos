@@ -3,34 +3,41 @@ package es.danicarlos.proyecto;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 public class Rueda {
 	
-	private  Texture img;
-	private static final int RADIO=186;
+	private  Sprite img;
+	private double radio;
+	private float xCentro, yCentro;
 	private ArrayList<Vector2> misPuntos;
-	private static final int DIVISIONES=18;
+	private static final int DIVISIONES=12;
+	
 
 	
 	
 	
-	public Rueda() {
+	public Rueda(Sprite miJuego, double radio, float xCentro, float yCentro) {
 		super();
-		img= new Texture("juego1.png"); 
-		//misPuntos=calculadorPosiciones(RADIO, DIVISIONES)
+		img= miJuego;
+		this.radio=radio;
+		this.xCentro=xCentro;
+		this.yCentro=yCentro;
+		calculadorPosiciones(DIVISIONES,radio,xCentro,yCentro);
+		
 	}
 
 
 
-	public Texture getImg() {
+	public Sprite getImg() {
 		return img;
 	}
 
 
 
-	public void setImg(Texture img) {
+	public void setImg(Sprite img) {
 		this.img = img;
 	}
 
@@ -38,7 +45,7 @@ public class Rueda {
 
 
 	public ArrayList<Vector2> getMisPuntos(float centrox, float centroy) {
-		return calculadorPosiciones(RADIO, DIVISIONES, centrox, centroy);
+		return calculadorPosiciones(12, DIVISIONES, centrox, centroy);
 	}
 
 
@@ -46,12 +53,56 @@ public class Rueda {
 	public void setMisPuntos(ArrayList<Vector2> misPuntos) {
 		this.misPuntos = misPuntos;
 	}
+	
+	
 
 
 
 
 
-	private ArrayList<Vector2> calculadorPosiciones(int numeroDiv, int radio, float centroX, float centroY){
+	public double getRadio() {
+		return radio;
+	}
+
+
+
+	public void setRadio(double radio) {
+		this.radio = radio;
+	}
+
+
+
+	public float getxCentro() {
+		return xCentro;
+	}
+
+
+
+	public void setxCentro(float xCentro) {
+		this.xCentro = xCentro;
+	}
+
+
+
+	public float getyCentro() {
+		return yCentro;
+	}
+
+
+
+	public void setyCentro(float yCentro) {
+		this.yCentro = yCentro;
+	}
+
+
+
+	public ArrayList<Vector2> getMisPuntos() {
+		return misPuntos;
+	}
+
+
+
+	public ArrayList<Vector2> calculadorPosiciones(int numeroDiv, double radio, float centroX, float centroY){
 		int angulo=360/numeroDiv;
 		float x;
 		float y;
@@ -62,8 +113,8 @@ public class Rueda {
 		
 		for(int i=0; i<361; i=i+angulo){
 			
-			x=(centroX+(matUtils.cosDeg(i)*radio));
-			y=(centroY+(matUtils.sinDeg(i)*radio));
+			x=(centroX+(matUtils.cosDeg(i)*(float)radio));
+			y=(centroY+(matUtils.sinDeg(i)*(float)radio));
 			Vector2 miVector=new Vector2(x,y);
 			misPuntos.add(miVector);
 			//vertices[j]=x;

@@ -1,17 +1,150 @@
 package es.danicarlos.proyecto;
 
+import java.util.Random;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 
 public class Pelota {
-	private static final float SPEED=200;
-	private Texture textura;
+	private static final float SPEED=300;
+	private Sprite textura;
 	private Circle bordes;
+	private float posicionX, posicionY;
+	private float radio;
+	private Rueda miJuego;
+	private float xa =3;
+	private float ya = 3;
+	private Vector2 miVectorUni;
 	
-	public Pelota(Float x, float y){
-		textura= new Texture(Gdx.files.internal("pelota.png"));
+	public Pelota(Sprite textura,float x, float y, Rueda miJuego){
+		this.textura= textura;
+		//bordes=new Circle(x,y, textura.getHeight());
 		//bordes= new Circle
+		posicionX=x;
+		posicionY=y;
+		radio=textura.getWidth()/2;
+		this.miJuego=miJuego;
+		miVectorUni= new Vector2();
+		
+	}
+	public void draw(SpriteBatch batch){
+		update();
+		batch.draw(textura, posicionX-textura.getHeight()/2, posicionY-textura.getHeight()/2);
+	}
+	
+	//Regular el tiempo con milisegundos para que tenga una velocidad fija para todas las maquinas
+	public void update(){
+		
+		choqueRueda();
+		
+		
+		
+	}
+	public Circle getBordes(){
+		return bordes;
+	}
+	private boolean choqueRueda(){
+		 	double distancia=distanciaPuntos(posicionX,posicionY,miJuego.getxCentro(),miJuego.getyCentro());
+
+		 	int retval = Double.compare(distancia,(double) miJuego.getRadio()-radio);	
+		 
+			if(retval>0){
+				ya=aleatorio();
+				xa=aleatorio();
+				boolean valido=false;
+				while(!valido){
+					distancia=distanciaPuntos(posicionX+xa,posicionY+ya,miJuego.getxCentro(),miJuego.getyCentro());
+					retval = Double.compare(distancia, miJuego.getRadio()-radio);	
+					if(retval>0){
+						ya=aleatorio();
+						xa=aleatorio();
+						
+						while (Math.sqrt(Math.pow(xa,2)+Math.pow(ya,2))!=5){
+							ya=aleatorio();
+							xa=aleatorio();
+						}
+						
+					}else if((Math.sqrt(Math.pow(xa,2)+Math.pow(ya,2))==5)){
+								valido=true;
+					}
+					while (Math.sqrt(Math.pow(xa,2)+Math.pow(ya,2))!=5){
+						ya=aleatorio();
+						xa=aleatorio();
+					}
+				}
+				System.out.println(Math.sqrt(Math.pow(xa,2)+Math.pow(ya,2)))	;
+
+
+				//System.out.println("PASO");
+				posicionX=posicionX+xa;
+				posicionY=posicionY+ya;
+				return true;
+			}
+			posicionX=posicionX+xa;
+			posicionY=posicionY+ya;
+			return false;
+		
+	}
+	
+	public static double distanciaPuntos(float x, float y, float centerX, float centerY){
+		
+		double respuest;
+		double res1,res2;
+		res1=centerX-x;  
+		res2=centerY-y;
+	    res1=Math.pow(res1, 2)+Math.pow(res2, 2);
+	    respuest=Math.sqrt(res1);
+	    return respuest;
+	}
+	public Sprite getTextura() {
+		return textura;
+	}
+	public void setTextura(Sprite textura) {
+		this.textura = textura;
+	}
+	public float getPosicionX() {
+		return posicionX;
+	}
+	public void setPosicionX(float posicionX) {
+		this.posicionX = posicionX;
+	}
+	public float getPosicionY() {
+		return posicionY;
+	}
+	public void setPosicionY(float posicionY) {
+		this.posicionY = posicionY;
+	}
+	public float getRadio() {
+		return radio;
+	}
+	public void setRadio(float radio) {
+		this.radio = radio;
+	}
+	public Rueda getMiJuego() {
+		return miJuego;
+	}
+	public void setMiJuego(Rueda miJuego) {
+		this.miJuego = miJuego;
+	}
+	public void setBordes(Circle bordes) {
+		this.bordes = bordes;
+	}
+	private float aleatorio(){
+		Random rnd=new Random();
+		float valor=rnd.nextInt(5);
+		float posneg=rnd.nextInt(2)+1;
+		if(posneg==1){
+			posneg=1;
+		}else{
+			posneg=-1;
+		}
+		return posneg*valor;
 	}
 
+	
 }

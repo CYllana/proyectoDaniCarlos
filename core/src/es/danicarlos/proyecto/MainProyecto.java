@@ -45,81 +45,95 @@ public class MainProyecto extends ApplicationAdapter {
 	private Map<Integer, Color> map;
 	private int xa =3;
 	private int ya = 3;
-	private Sprite img;
+	private Sprite img,pelotaSprite;
 	private Animation anim;
+	private Pelota miPelota;
 	//private SimpleButton botonIzq, botonDer;
 	private BotonGirar btIzq, btDer;
 
 	@Override
 	public void create () {
-		Gdx.graphics.setWindowedMode(500,600);
+		Gdx.graphics.setWindowedMode(460,600);
 
 		
 		height=Gdx.graphics.getHeight();
 		width=Gdx.graphics.getWidth();
 		batch = new SpriteBatch();
 		font= new BitmapFont();
-		imgTexture = new Texture("juego1.png");
+		imgTexture = new Texture("miJuegof.png");
+	
 		//img=new Sprite(imgTexture);
 		//textRegion= new TextureRegion(img);
 		pelota= new Texture("esfera.png");
-		
-		xPelota=(-pelota.getWidth()+width)/2;
-		yPelota=(-pelota.getHeight()+height)/2;	
+		//Definimos valores medios
+		xPelota=pelota.getWidth()+(width/2);
+		yPelota=pelota.getHeight()+(height/2);	
 		xCirc=(-imgTexture.getWidth()+width)/2;
 		yCirc=(-imgTexture.getHeight()+height)/2;
+		//Creador de figuras
 		figurator = new ShapeRenderer();
-		System.out.println(height);
+		//Inicializamos la imagen de la ruleta
 		img=new Sprite(imgTexture);
-		img.setBounds(0, width-img.getWidth(),width,width);
+		img.setBounds(0, (height-img.getHeight())/2,width,width);
+		img.setCenter(width/2,height/2);
+		img.setOriginCenter();
+		img.rotate(15);
+		//Inicializamos los botones
 	    bIzq=new Texture("flachaIzq.png");
 	    bDer=new Texture("flachaDer.png");
-	    btIzq=new BotonGirar(bIzq, height, height/12); 
-	    btDer=new BotonGirar(bDer, width-90, height/12);
+	   
+	    System.out.println((bIzq.getWidth()/2)+(width/7));
+	    btIzq=new BotonGirar(bIzq, -(bIzq.getWidth()/2)+(width/7),width/12); 
+	    btDer=new BotonGirar(bDer,width-((bIzq.getWidth()/2)+(width/7)), width/12);
+	    System.out.println(width*19/43);
+	    Rueda miRueda=new Rueda (img, width*19/43, width/2,height/2);
 
+	    misPuntos=miRueda.calculadorPosiciones(12,204,(width)/2,height/2);
+	    pelotaSprite=new Sprite(pelota);
+	    miPelota=new Pelota(pelotaSprite,width/2, height/2,miRueda);
 
 
 	}
 	@Override
 	public void render () {
+		
+		//Primero hacer updates y luego dibujar
+		
+		//El delta del movimiento pasarlo a traves del tiempo ( tutorial libgdx delta manbow2 )
+		
+		//Pintamos el fondo
 		Gdx.gl.glLineWidth(32);
 		Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
-		
-		
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
-		figurator.begin(ShapeType.Line.Filled);
-	    figurator.setColor(Color.WHITE);
-	    figurator.circle(+3+width/2, -11+height/2, -5+img.getHeight()/2);
-	   // figurator.circle(70, 70, height/2);
-	   //figurator.circle(width-70, 70, height/20);
-	    figurator.end();
+		//Dibujamos el circulo blanco de fondo
+	    figurator.begin(ShapeType.Line.Filled);
 
+	    figurator.setColor(Color.WHITE);
+	    //circulo botones
+	    //izq
+	    figurator.circle(height/20-(bIzq.getWidth()/2)+(width/7), height/20+ width/12, height/20);
+	   	//der
+	    figurator.circle( width-(height/20-(bIzq.getWidth()/2)+(width/7)), height/20+ width/12, height/20);
+	    figurator.end();
+	    
+	    //Dibujamos nuestro circulo de juego
 	    batch.begin();
 	    img.draw(batch);
 	    batch.end();
 	    
+	    //Metodo que nos 
+	    actualizarRueda();
+	    batch.begin();
+	    miPelota.draw(batch);
+
+	    batch.end();
+	    figurator.begin(ShapeType.Line.Filled);
+	    figurator.setColor(Color.RED);
+	    figurator.circle(miPelota.getPosicionX(), miPelota.getPosicionY(), 3);
+	    figurator.circle(width/2,width/2, 3);
+	    figurator.end();
 	    
-
-	    if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)||btDer.sePulsaElBoton()){
-	    	 rotateRight();
-	    	figurator.begin(ShapeType.Line.Filled);
-	    	figurator.setColor(Color.YELLOW);
-	 	    figurator.circle(width-70, 70, height/20);
-
-	 	    figurator.end();
-	    	
-
-	    }else if(Gdx.input.isKeyPressed(Input.Keys.LEFT)|| btIzq.sePulsaElBoton()){
-	    	figurator.begin(ShapeType.Line.Filled);
-	    	figurator.setColor(Color.YELLOW);
-	 	    figurator.circle(70, 70, height/20);
-	 	    figurator.end();
-	    	rotateLeft();
-	    	 
-	    }
-	    	
-	    
+	
 	    
 	    
 	    
@@ -127,18 +141,6 @@ public class MainProyecto extends ApplicationAdapter {
 	    
 	    
 	   
-	    double distancia=distanciaPuntos(xPelota,yPelota,(-pelota.getWidth()+width)/2, (-pelota.getHeight()+height)/2);
-		int retval = Double.compare(distancia, 184);		
-		if(retval>0){
-			
-			
-				
-				ya=-1+ya*-1;
-				xa=-1+xa*-1;
-			
-		}
-			xPelota=xPelota+xa;
-			yPelota=yPelota+ya;
 
 			batch.begin();
 			btDer.draw(batch);
@@ -153,29 +155,36 @@ public class MainProyecto extends ApplicationAdapter {
 			//batch.draw(bIzq, 45, 50);
 			//batch.draw(bDer, width-90, 50);
 			//batch.end();
-		
-		
+
 		
 		
 	}
-public static double distanciaPuntos(float x, float y, float centerX, float centerY){
-		
-		double respuest;
-		double res1,res2;
-		res1=centerX-x;  
-		res2=centerY-y;
-	    res1=Math.pow(res1, 2)+Math.pow(res2, 2);
-	    respuest=Math.sqrt(res1);
-	    return respuest;
-	}
+
 	
 private void rotateLeft() {
-    img.setRotation(img.getRotation() - 1);
+    img.setRotation(img.getRotation() -2);
 }
 private void rotateRight() {
-    img.setRotation(img.getRotation() + 1);
+    img.setRotation(img.getRotation() + 2);
 }
+public void actualizarRueda(){
+	 if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)||btDer.sePulsaElBoton()){
+    	 rotateRight();
+    	figurator.begin(ShapeType.Line.Filled);
+    	figurator.setColor(Color.YELLOW); 
+    	figurator.circle( width-(height/20-(bIzq.getWidth()/2)+(width/7)), height/20+ width/12, height/20);
+ 	    figurator.end();
+    	
 
+    }else if(Gdx.input.isKeyPressed(Input.Keys.LEFT)|| btIzq.sePulsaElBoton()){
+    	figurator.begin(ShapeType.Line.Filled);
+    	figurator.setColor(Color.YELLOW);
+    	figurator.circle(height/20-(bIzq.getWidth()/2)+(width/7), height/20+ width/12, height/20);
+ 	    figurator.end();
+    	rotateLeft();
+    	 
+    }
+}
 
 
 }
