@@ -85,6 +85,7 @@ public class MainProyecto extends ApplicationAdapter {
 		Gdx.gl.glLineWidth(32);
 		Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
 		
+		
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		figurator.begin(ShapeType.Line.Filled);
