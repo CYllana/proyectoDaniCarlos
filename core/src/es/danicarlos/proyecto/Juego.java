@@ -31,12 +31,12 @@ import com.badlogic.gdx.math.Shape2D;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 
-public class MainProyecto extends ApplicationAdapter {
+public class Juego extends ApplicationAdapter {
 	
 	private final static int WINDOW_WIDTH = 500;
 	private final static int WINDOW_HEIGHT	 = 500;
 	private SpriteBatch batch;
-	private Texture imgTexture, pelota, bIzq,bDer;
+	private Texture imgTexture, pelota, bIzq,bDer, punto;
 	private BitmapFont font;
 	private int  height, width, xCirc, yCirc, xPelota, yPelota;
 	private ShapeRenderer figurator;
@@ -45,9 +45,11 @@ public class MainProyecto extends ApplicationAdapter {
 	private Map<Integer, Color> map;
 	private int xa =3;
 	private int ya = 3;
-	private Sprite img,pelotaSprite;
+	private Sprite img,pelotaSprite, point;
 	private Animation anim;
 	private Pelota miPelota;
+	private Rueda miRueda;
+	private Punto puntos;
 	//private SimpleButton botonIzq, botonDer;
 	private BotonGirar btIzq, btDer;
 
@@ -81,17 +83,19 @@ public class MainProyecto extends ApplicationAdapter {
 		//Inicializamos los botones
 	    bIzq=new Texture("flachaIzq.png");
 	    bDer=new Texture("flachaDer.png");
-	   
+	   //
+	    punto =new Texture("punto.png");
 	    System.out.println((bIzq.getWidth()/2)+(width/7));
 	    btIzq=new BotonGirar(bIzq, -(bIzq.getWidth()/2)+(width/7),width/12); 
 	    btDer=new BotonGirar(bDer,width-((bIzq.getWidth()/2)+(width/7)), width/12);
 	    System.out.println(width*19/43);
-	    Rueda miRueda=new Rueda (img, width*19/43, width/2,height/2);
+	    miRueda=new Rueda (img, width*19/43, width/2,height/2);
 
 	    misPuntos=miRueda.calculadorPosiciones(12,204,(width)/2,height/2);
 	    pelotaSprite=new Sprite(pelota);
 	    miPelota=new Pelota(pelotaSprite,width/2, height/2,miRueda);
-
+	    point=new Sprite(punto);
+	    puntos=new Punto(point,this,width/20);
 
 	}
 	@Override
@@ -125,13 +129,9 @@ public class MainProyecto extends ApplicationAdapter {
 	    actualizarRueda();
 	    batch.begin();
 	    miPelota.draw(batch);
-
+	    puntos.draw(batch);
 	    batch.end();
-	    figurator.begin(ShapeType.Line.Filled);
-	    figurator.setColor(Color.RED);
-	    figurator.circle(miPelota.getPosicionX(), miPelota.getPosicionY(), 3);
-	    figurator.circle(width/2,width/2, 3);
-	    figurator.end();
+
 	    
 	
 	    
@@ -143,6 +143,7 @@ public class MainProyecto extends ApplicationAdapter {
 	   
 
 			batch.begin();
+			//batch.draw(punto, xCirc,yCirc);
 			btDer.draw(batch);
 			btIzq.draw(batch);
 			batch.end();
@@ -185,6 +186,39 @@ public void actualizarRueda(){
     	 
     }
 }
+public SpriteBatch getBatch() {
+	return batch;
+}
+public void setBatch(SpriteBatch batch) {
+	this.batch = batch;
+}
+public int getHeight() {
+	return height;
+}
+public void setHeight(int height) {
+	this.height = height;
+}
+public int getWidth() {
+	return width;
+}
+public void setWidth(int width) {
+	this.width = width;
+}
+public Pelota getMiPelota() {
+	return miPelota;
+}
+public void setMiPelota(Pelota miPelota) {
+	this.miPelota = miPelota;
+}
+public Rueda getMiRueda() {
+	return miRueda;
+}
+public void setMiRueda(Rueda miRueda) {
+	this.miRueda = miRueda;
+}
+
+
+
 
 
 }

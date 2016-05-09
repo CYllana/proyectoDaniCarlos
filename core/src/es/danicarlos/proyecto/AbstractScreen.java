@@ -3,7 +3,7 @@ package es.danicarlos.proyecto;
 import com.badlogic.gdx.Screen;
 
 public class AbstractScreen implements Screen {
-	private MainProyecto main;
+	private Juego main;
 	@Override
 	public void show() {
 		// TODO Auto-generated method stub
