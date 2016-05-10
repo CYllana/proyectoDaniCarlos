@@ -5,12 +5,15 @@ import java.util.Random;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 public class Punto {
 	private float x,y, radio;
 	private Juego miJuego;
 	private Sprite textura;
+	private Circle bordes;
 
 	
 	
@@ -18,9 +21,13 @@ public class Punto {
 		this.textura=textura;
 		this.miJuego=miJuego;
 		this.radio=radio;
-		this.x=miJuego.getWidth()/2+aleatorio();
+		textura.setCenterX(radio);
+		this.x=(+textura.getWidth()+miJuego.getWidth())/2+aleatorioX();
 		
-		this.y=miJuego.getHeight()/2+aleatorio();
+		this.y=(+textura.getWidth()+miJuego.getHeight())/2+aleatorioY();
+		this.textura.setCenter(x, y);
+		this.textura.setOriginCenter();
+		bordes=new Circle(x,y,textura.getWidth()/2);
 	}
 
 	public Punto(float x, float y) {
@@ -44,6 +51,17 @@ public class Punto {
 	public void setY(float y) {
 		this.y = y;
 	}
+	
+	
+	
+	public Circle getBordes() {
+		return bordes;
+	}
+
+	public void setBordes(Circle bordes) {
+		this.bordes = bordes;
+	}
+
 	public static double distanciaPuntos(float x, float y, float centerX, float centerY){
 		
 		double respuest;
@@ -65,26 +83,52 @@ public class Punto {
 	}
 
 	
-	private float aleatorio(){
+	private float radioAleatorio(){
 		double radioJuego= miJuego.getMiRueda().getRadio();
 		Random rnd=new Random();
-		double valor=rnd.nextDouble()*radioJuego;
-		float posneg=rnd.nextInt(2)+1;
-		if(posneg==1){
-			posneg=1;
-		}else{
-			posneg=-1;
-		}
-		return  (float) (posneg*valor);
+		double valor=rnd.nextDouble()*radioJuego-textura.getHeight();
+	
+		return (float)valor;
 	}
+	private float anguloAleatorio(){
+		
+		Random rnd=new Random();
+		float valor=rnd.nextInt(360);
+		return valor;
+	}
+	private float aleatorioX(){
+		float radioJuego=radioAleatorio();
+		float angulo=anguloAleatorio();
+		return radioJuego*MathUtils.sinDeg(angulo);
+	}
+	private float aleatorioY(){
+		float radioJuego=radioAleatorio();
+		float angulo=anguloAleatorio();
+		return radioJuego*MathUtils.cosDeg(angulo);
+	}
+	
+	
+	
+	
 	public void draw(SpriteBatch batch){
 		update();
-		batch.draw(textura,x,y );
+		batch.draw(textura,x-textura.getHeight()/2,y-textura.getHeight()/2 );
 	}
 	
 	//Regular el tiempo con milisegundos para que tenga una velocidad fija para todas las maquinas
 	public void update(){
-
+		if(bordes.overlaps(miJuego.getMiPelota().getBordes())){
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			this.x=miJuego.getWidth()/2+aleatorioX();
+			this.y=miJuego.getHeight()/2+aleatorioY();
+			bordes.setPosition(x, y);
+			
+		}
 		
 		
 	}

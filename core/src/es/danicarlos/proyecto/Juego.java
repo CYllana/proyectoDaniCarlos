@@ -30,6 +30,10 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Shape2D;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 
 public class Juego extends ApplicationAdapter {
 	
@@ -37,22 +41,17 @@ public class Juego extends ApplicationAdapter {
 	private final static int WINDOW_HEIGHT	 = 500;
 	private SpriteBatch batch;
 	private Texture imgTexture, pelota, bIzq,bDer, punto;
-	private BitmapFont font;
 	private int  height, width, xCirc, yCirc, xPelota, yPelota;
 	private ShapeRenderer figurator;
 	private MathUtils matUtils;
 	private ArrayList<Vector2> misPuntos;
-	private Map<Integer, Color> map;
-	private int xa =3;
-	private int ya = 3;
+
 	private Sprite img,pelotaSprite, point;
-	private Animation anim;
 	private Pelota miPelota;
 	private Rueda miRueda;
 	private Punto puntos;
 	//private SimpleButton botonIzq, botonDer;
 	private BotonGirar btIzq, btDer;
-
 	@Override
 	public void create () {
 		Gdx.graphics.setWindowedMode(460,600);
@@ -61,7 +60,7 @@ public class Juego extends ApplicationAdapter {
 		height=Gdx.graphics.getHeight();
 		width=Gdx.graphics.getWidth();
 		batch = new SpriteBatch();
-		font= new BitmapFont();
+		
 		imgTexture = new Texture("miJuegof.png");
 	
 		//img=new Sprite(imgTexture);
@@ -93,9 +92,26 @@ public class Juego extends ApplicationAdapter {
 
 	    misPuntos=miRueda.calculadorPosiciones(12,204,(width)/2,height/2);
 	    pelotaSprite=new Sprite(pelota);
-	    miPelota=new Pelota(pelotaSprite,width/2, height/2,miRueda);
+	    miPelota=new Pelota(pelotaSprite,width/2, height/2,this);
+	    
 	    point=new Sprite(punto);
 	    puntos=new Punto(point,this,width/20);
+	   // Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
+	    //miPelota=new Pelota((width)/2, height/2,miRueda);
+	   
+	    /*Label nameLabel = new Label("Name:", skin);
+	    TextField nameText = new TextField("aaa",skin);
+	    Label addressLabel = new Label("Address:", skin);
+	    TextField addressText = new TextField("bbb",skin);
+
+	    table = new Table();
+	    table.add(nameLabel).expandX(); // Column 0 receives all extra horizontal space.
+	    table.add(nameText).width(100);
+	    table.row();
+	    table.add(addressLabel);
+	    table.add(addressText).width(100);
+	    */
+
 
 	}
 	@Override
@@ -110,6 +126,15 @@ public class Juego extends ApplicationAdapter {
 		Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		//Dibujamos el circulo blanco de fondo
+		/*batch.begin();
+		table.setPosition(width/2,height/2);
+		//table.setOrigin(width/2, height/2);
+		table.drawDebug(figurator);
+		table.draw(batch, width/2);
+		
+		batch.end();
+		
+		*/
 	    figurator.begin(ShapeType.Line.Filled);
 
 	    figurator.setColor(Color.WHITE);
@@ -131,7 +156,14 @@ public class Juego extends ApplicationAdapter {
 	    miPelota.draw(batch);
 	    puntos.draw(batch);
 	    batch.end();
-
+	    //Comprobacion posiciones
+	    figurator.begin(ShapeType.Line.Filled);
+	    figurator.setColor(Color.RED);
+	    //figurator.circle(miPelota.getBordes().x,miPelota.getBordes().y,miPelota.getBordes().radius);
+	    //figurator.circle(puntos.getBordes().x,puntos.getBordes().y,puntos.getBordes().radius);
+	    figurator.circle(puntos.getX(),puntos.getY(), 3);
+	    figurator.circle(miPelota.getPosicionX(),miPelota.getPosicionY(), 3);
+	    figurator.end();
 	    
 	
 	    
@@ -216,6 +248,14 @@ public Rueda getMiRueda() {
 public void setMiRueda(Rueda miRueda) {
 	this.miRueda = miRueda;
 }
+public Punto getPuntos() {
+	return puntos;
+}
+public void setPuntos(Punto puntos) {
+	this.puntos = puntos;
+}
+
+
 
 
 

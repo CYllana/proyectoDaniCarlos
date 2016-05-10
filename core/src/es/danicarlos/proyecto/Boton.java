@@ -31,6 +31,7 @@ public abstract class Boton {
 	}
 
 	public void update() {
+		
 		if(sePulsaElBoton())
 			funcionamiento();
 	}
