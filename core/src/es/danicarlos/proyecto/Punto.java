@@ -19,6 +19,7 @@ public class Punto {
 		this.miJuego=miJuego;
 		this.radio=radio;
 		this.x=miJuego.getWidth()/2+aleatorio();
+		
 		this.y=miJuego.getHeight()/2+aleatorio();
 	}
 
