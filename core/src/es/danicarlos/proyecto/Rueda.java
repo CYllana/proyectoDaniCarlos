@@ -1,32 +1,45 @@
 package es.danicarlos.proyecto;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 public class Rueda {
-	
+
 	private  Sprite img;
 	private double radio;
 	private float xCentro, yCentro;
 	private ArrayList<Vector2> misPuntos;
 	private static final int DIVISIONES=12;
-	
+	private float rotacion;
+	private HashMap<Integer, Color> map;
+	private Juego miJuego;
 
-	
-	
-	
-	public Rueda(Sprite miJuego, double radio, float xCentro, float yCentro) {
+
+
+
+	public Rueda(Sprite spriteRueda, double radio, float xCentro, float yCentro, Juego miJuego) {
 		super();
-		img= miJuego;
+
+		img= spriteRueda;
 		this.radio=radio;
 		this.xCentro=xCentro;
 		this.yCentro=yCentro;
 		calculadorPosiciones(DIVISIONES,radio,xCentro,yCentro);
-		
+		rotacion=0;
+		this.miJuego=miJuego;
+		map = new HashMap<Integer, Color>();
+		map.put(1, Color.RED);		
+		map.put(2, Color.BLUE);		
+		map.put(3, Color.BLACK);	
+		map.put(4, Color.ORANGE);	
+		map.put(5, Color.YELLOW);		
+		map.put(6, Color.GREEN);
 	}
 
 
@@ -53,8 +66,8 @@ public class Rueda {
 	public void setMisPuntos(ArrayList<Vector2> misPuntos) {
 		this.misPuntos = misPuntos;
 	}
-	
-	
+
+
 
 
 
@@ -102,32 +115,125 @@ public class Rueda {
 
 
 
-	public ArrayList<Vector2> calculadorPosiciones(int numeroDiv, double radio, float centroX, float centroY){
-		int angulo=360/numeroDiv;
-		float x;
-		float y;
-		int j=0;
-		MathUtils matUtils=new MathUtils();
-		
-		ArrayList<Vector2> misPuntos= new ArrayList<Vector2>();
-		
-		for(int i=0; i<361; i=i+angulo){
-			
-			x=(centroX+(matUtils.cosDeg(i)*(float)radio));
-			y=(centroY+(matUtils.sinDeg(i)*(float)radio));
-			Vector2 miVector=new Vector2(x,y);
-			misPuntos.add(miVector);
-			//vertices[j]=x;
-			//vertices[j+1]=y;
-			j=j+2;
-		}
-		
-		return misPuntos;
-		
-	}
-	
+
+	public float getRotacion() {
+	return rotacion;
 }
-/*map = new HashMap<Integer, Color>();
+
+
+
+public void setRotacion(float rotacion) {
+		this.rotacion=rotacion;
+	
+		/*if(rotacion>360){
+			this.rotacion=rotacion-360;
+		}else{
+			this.rotacion=rotacion;
+
+		}*/
+
+	}
+
+
+		public ArrayList<Vector2> calculadorPosiciones(int numeroDiv, double radio, float centroX, float centroY){
+			int angulo=360/numeroDiv;
+			float x;
+			float y;
+			int j=0;
+			MathUtils matUtils=new MathUtils();
+
+			ArrayList<Vector2> misPuntos= new ArrayList<Vector2>();
+
+			for(int i=0; i<361; i=i+angulo){
+
+				x=(centroX+(matUtils.cosDeg(i)*(float)radio));
+				y=(centroY+(matUtils.sinDeg(i)*(float)radio));
+				Vector2 miVector=new Vector2(x,y);
+				misPuntos.add(miVector);
+				//vertices[j]=x;
+				//vertices[j+1]=y;
+				j=j+2;
+			}
+
+			return misPuntos;
+
+		}
+		public Color bordercolor(double anguloPelota){
+			//System.out.println("rotacion="+rotacion+" angulo que Pelota="+anguloPelota);
+			Color miVariable=new Color();
+			/*if(rotacion>75){
+				anguloPelota=anguloPelota-rotacion;
+			}*/
+			
+			if(anguloPelota>=0 && anguloPelota<30){
+				//amarillo
+				System.out.println("rotacion="+rotacion+" angulo que Pelota="+anguloPelota+ "  color=amarillo");
+				return map.get(5);
+			}else 	if(anguloPelota>=30+rotacion && anguloPelota<60+rotacion){
+				System.out.println("rotacion="+rotacion+" angulo que Pelota="+anguloPelota+ "  color=negro");
+
+				//negro
+				return map.get(3);
+			}else 	if(anguloPelota>=60 && anguloPelota<90){
+				System.out.println("rotacion="+rotacion+" angulo que Pelota="+anguloPelota+ "  color=verde");
+
+				//verde
+				return map.get(6);
+			}
+			else if(anguloPelota>=90 && anguloPelota<120){
+				System.out.println("rotacion="+rotacion+" angulo que Pelota="+anguloPelota+ "  color=amarillo");
+
+				//amarillo
+				return map.get(5);
+			}else if(anguloPelota>=120 && anguloPelota<150){
+				System.out.println("rotacion="+rotacion+" angulo que Pelota="+anguloPelota+ "  color=verde");
+
+				//verde
+				return map.get(6);
+			}else if(anguloPelota>=150 && anguloPelota<180){
+				//naranja
+				System.out.println("rotacion="+rotacion+" angulo que Pelota="+anguloPelota+ "  color=naranja");
+
+				return map.get(4);
+			}else if(anguloPelota>=180 && anguloPelota<210){
+				System.out.println("rotacion="+rotacion+" angulo que Pelota="+anguloPelota+ "  color=azul");
+
+				//azul
+				return map.get(2);
+			}else if(anguloPelota>=210 && anguloPelota<240){
+				//rojo
+				System.out.println("rotacion="+rotacion+" angulo que Pelota="+anguloPelota+ "  color=rojo");
+
+				return map.get(1);
+			}else if(anguloPelota>=240 && anguloPelota<270){
+				//naranja
+				System.out.println("rotacion="+rotacion+" angulo que Pelota="+anguloPelota+ "  color=naranja");
+
+				return map.get(4);
+			}else if(anguloPelota>=270 && anguloPelota<300){
+				//negro
+				System.out.println("rotacion="+rotacion+" angulo que Pelota="+anguloPelota+ "  color=negro");
+
+				return map.get(3);
+			}else if(anguloPelota>=300 && anguloPelota<330){
+				System.out.println("rotacion="+rotacion+" angulo que Pelota="+anguloPelota+ "  color=azul");
+
+				//azul
+				return map.get(2);
+			}else {
+				System.out.println("rotacion="+rotacion+" angulo que Pelota="+anguloPelota+ "  color=negro");
+
+				//negro	
+				return map.get(3);
+			}
+
+		}
+
+
+	}
+
+
+	/*map = new HashMap<Integer, Color>();
 map.put(1, Color.RED);		map.put(7, Color.GREEN);
 map.put(2, Color.BLUE);		map.put(8, Color.GRAY);
 map.put(3, Color.BLACK);	
@@ -137,7 +243,7 @@ map.put(6, Color.PURPLE);
 vertices=new float[27];
 graficos=new Graph()*/
 
-/*//polygon vertices
+	/*//polygon vertices
 /*figurator.begin(ShapeType.Line.Filled);
 figurator.polygon(vertices);
 figurator.end();
@@ -154,16 +260,16 @@ figurator.begin(ShapeType.Line);
 
 for(int i=0; i<(misPuntos.size());i++){
 	Random rnd= new Random();
-	
+
 	figurator.setColor(map.get(rnd.nextInt(8)+1));
 
-	
+
 	if(i!=misPuntos.size()-1){
-		
+
 		figurator.line(misPuntos.get(i),  misPuntos.get(i+1));
 	}else{
 		figurator.line(misPuntos.get(i), misPuntos.get(0));
-		
+
 	}
 }
 figurator.end();
@@ -237,3 +343,46 @@ Gdx.gl.glLineWidth(18);
 //figurator.circle(xCirc, yCirc, 201);
 	figurator.end();*/
 
+/*
+ * Color miVariable=new Color();
+			if(anguloPelota>=rotacion && anguloPelota<rotacion+30){
+				//amarillo
+				miVariable= map.get(5);
+			}else 	if(anguloPelota>=rotacion+30 && anguloPelota<rotacion+60){
+				//negro
+				miVariable=map.get(3);
+			}else 	if(anguloPelota>=rotacion+60 && anguloPelota<rotacion+90){
+				//verde
+				miVariable= map.get(6);
+			}
+			else if(anguloPelota>=rotacion+90 && anguloPelota<rotacion+120){
+				//amarillo
+				miVariable= map.get(5);
+			}else if(anguloPelota>=rotacion+120 && anguloPelota<rotacion+150){
+				//verde
+				miVariable= map.get(6);
+			}else if(anguloPelota>=rotacion+150 && anguloPelota<rotacion+180){
+				//naranja
+				miVariable= map.get(4);
+			}else if(anguloPelota>=rotacion+180 && anguloPelota<rotacion+210){
+				//azul
+				miVariable= map.get(2);
+			}else if(anguloPelota>=rotacion+210 && anguloPelota<rotacion+240){
+				//rojo
+				miVariable= map.get(1);
+			}else if(anguloPelota>=rotacion+240 && anguloPelota<rotacion+270){
+				//naranja
+				miVariable=map.get(4);
+			}else if(anguloPelota>=rotacion+270 && anguloPelota<rotacion+300){
+				//negro
+				miVariable= map.get(3);
+			}else if(anguloPelota>=rotacion+300 && anguloPelota<rotacion+330){
+				//azul
+				miVariable=map.get(2);
+			}else {
+				//rojo	
+				miVariable= map.get(1);
+			}
+			System.out.println("rotacion="+rotacion+" angulo que Pelota="+anguloPelota+"  color=  "+miVariable.toString());
+			return miVariable;
+ */

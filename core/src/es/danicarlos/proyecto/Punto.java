@@ -13,7 +13,8 @@ public class Punto {
 	private float x,y, radio;
 	private Juego miJuego;
 	private Sprite textura;
-	private Circle bordes;
+	private Circle bordes;	
+	
 
 	
 	
@@ -117,7 +118,8 @@ public class Punto {
 	
 	//Regular el tiempo con milisegundos para que tenga una velocidad fija para todas las maquinas
 	public void update(){
-		if(bordes.overlaps(miJuego.getMiPelota().getBordes())){
+		if(colision()){
+			miJuego.setEstrellas(1);
 			try {
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
@@ -130,6 +132,11 @@ public class Punto {
 			
 		}
 		
+		
+	}
+	public boolean colision(){
+	
+		return bordes.overlaps(miJuego.getMiPelota().getBordes());
 		
 	}
 	

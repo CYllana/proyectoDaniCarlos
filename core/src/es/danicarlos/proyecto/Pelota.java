@@ -21,6 +21,7 @@ public class Pelota {
 	private float ya =6;
 	private Vector2 miVectorUni;
 	private Juego juego;
+	private double angulo;
 	
 	public Pelota(Sprite textura,float x, float y, Juego miJuego){
 		this.textura= textura;
@@ -51,7 +52,7 @@ public class Pelota {
 	public Circle getBordes(){
 		return bordes;
 	}
-	private boolean choqueRueda(){
+	public boolean choqueRueda(){
 		 	double distancia=distanciaPuntos(posicionX,posicionY,miJuego.getxCentro(),miJuego.getyCentro());
 		 	int retval = Double.compare(distancia,(double) miJuego.getRadio()-radio);	
 			if(retval>0){
@@ -103,6 +104,11 @@ public class Pelota {
 	public void setBordes(Circle bordes) {
 		this.bordes = bordes;
 	}
+	
+	
+	public void setAngulo(double angulo) {
+		this.angulo =this.angulo+ angulo;
+	}
 	private float aleatorio(){
 		Random rnd=new Random();
 		float valor=rnd.nextInt(5);
@@ -114,12 +120,14 @@ public class Pelota {
 		}
 		return posneg*valor;
 	}
-	private double getAngulo(){
+	public double getAngulo(){
 		//System.out.println((-juego.getMiRueda().getxCentro()+this.posicionX)/(juego.getMiRueda().getRadio()));
-		double rad=Math.acos((-juego.getMiRueda().getxCentro()+this.posicionX)/(juego.getMiRueda().getRadio()));
+		double rad=Math.acos((-juego.getMiRueda().getxCentro()+this.posicionX)/(juego.getMiRueda().getRadio()-radio));
 		if(this.posicionY>juego.getMiRueda().getyCentro()){
+			setAngulo(Math.toDegrees(rad));
 			return (Math.toDegrees(rad));
 		}
+			setAngulo(360-Math.toDegrees(rad));
 			return (360-Math.toDegrees(rad));
 		
 	}
@@ -162,8 +170,9 @@ public class Pelota {
 		
 	private void movimientoPelota(){
 		if(choqueRueda()){
-			reboteAleatorio();
-			System.out.println("xa:::>"+xa);
+			//reboteAleatorio();
+			revoteReturn();
+			//System.out.println("xa:::>"+xa);
 			//revoteNormal();
 			//System.out.println("PASO");
 			posicionX=posicionX+xa;
