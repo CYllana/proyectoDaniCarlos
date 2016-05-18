@@ -1,4 +1,4 @@
-package es.danicarlos.proyecto;
+package es.danicarlos.botones;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;

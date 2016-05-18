@@ -1,60 +1,53 @@
 package es.danicarlos.proyecto;
 
-import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Random;
 
-import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.ai.pfa.Graph;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.PolygonRegion;
-import com.badlogic.gdx.graphics.g2d.PolygonSprite;
-import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Shape2D;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 
-public class Juego extends ApplicationAdapter {
+import es.danicarlos.ventanas.MainProyecto;
+import es.danicarlos.ventanas.MainScreen;
+import es.danicarlos.ventanas.NewUserScreen;
+import es.danicarlos.ventanas.RecuperarScreen;
+import es.danicarlos.ventanas.ScoreScreen;
+import es.danicarlos.ventanas.Screens;
+import es.danicarlos.ventanas.UsersScreen;
+
+public class Juego  extends Game {
 
 	private final static int WINDOW_WIDTH = 500;
 	private final static int WINDOW_HEIGHT	 = 500;
 	private SpriteBatch batch;
-	private Texture imgTexture, pelota, bIzq,bDer, punto;
+	private Texture imgTexture, pelota, bIzq,bDer, punto, fondo;
 	private int  height, width, xCirc, yCirc, xPelota, yPelota;
 	private ShapeRenderer figurator;
 	private ArrayList<Vector2> misPuntos;
 	private BitmapFont font, puntuacion;
-	private Sprite img,pelotaSprite, point;
+	private Sprite img,pelotaSprite, point, flechaIz,flechaDer;
 	private Pelota miPelota;
 	private Rueda miRueda;
 	private Punto puntos;
 	private int estrellas;
-
+	private int tiempo;
+	private boolean choqueBola;
+	private Color[] colores={Color.YELLOW, Color.GREEN, Color.RED, Color.BLACK,Color.BLUE, Color.ORANGE};
+	private MainProyecto miMP;
 	//private SimpleButton botonIzq, botonDer;
 	private BotonGirar btIzq, btDer;
 	@Override
 	public void create () {
+		miMP=new MainProyecto();
 		Gdx.graphics.setWindowedMode(460,600);
 		font=new BitmapFont();
 		puntuacion=new BitmapFont();
@@ -62,9 +55,11 @@ public class Juego extends ApplicationAdapter {
 		height=Gdx.graphics.getHeight();
 		width=Gdx.graphics.getWidth();
 		batch = new SpriteBatch();
-
+		choqueBola=false;
+		
+	
 		imgTexture = new Texture("miJuegof.png");
-
+		fondo= new Texture("fondo.jpg");
 		//img=new Sprite(imgTexture);
 		//textRegion= new TextureRegion(img);
 		pelota= new Texture("esfera.png");
@@ -84,11 +79,13 @@ public class Juego extends ApplicationAdapter {
 		//Inicializamos los botones
 		bIzq=new Texture("flachaIzq.png");
 		bDer=new Texture("flachaDer.png");
+
 		//
 		punto =new Texture("punto.png");
-		System.out.println((bIzq.getWidth()/2)+(width/7));
-		btIzq=new BotonGirar(bIzq, -(bIzq.getWidth()/2)+(width/7),width/12); 
-		btDer=new BotonGirar(bDer,width-((bIzq.getWidth()/2)+(width/7)), width/12);
+		btIzq=new BotonGirar(bIzq, (-width/16)+width/8  ,width/12); 
+		btDer=new BotonGirar(bDer,-width/8+width-width/16, width/12);
+		//btIzq=new BotonGirar(bIzq, -(bIzq.getWidth()/2)+(width/7),width/12); 
+		//btDer=new BotonGirar(bDer,width-((bIzq.getWidth()/2)+(width/7)), width/12);
 		System.out.println(width*19/43);
 		miRueda=new Rueda (img, width*19/43, width/2,height/2,this);
 
@@ -97,7 +94,11 @@ public class Juego extends ApplicationAdapter {
 		miPelota=new Pelota(pelotaSprite,width/2, height/2,this);
 
 		point=new Sprite(punto);
-		puntos=new Punto(point,this,width/20);
+		puntos=new Punto(point,this);
+
+		//Tiempo
+		tiempo=30;
+
 		// Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
 		//miPelota=new Pelota((width)/2, height/2,miRueda);
 
@@ -111,14 +112,26 @@ public class Juego extends ApplicationAdapter {
 	    table.add(nameText).width(100);
 	    table.row();
 	    table.add(addressLabel);
-	    table.add(addressText).width(100);
-		 */
+	    table.add(addressText).width(100);*/
+		
+
+		//Screens.GAMESCREEN      = new Juego(this); // Se inicializan todas las pantallas
+		
+				Screens.MAINSCREEN      = new MainScreen(miMP);
+				Screens.SCORESCREEN     = new ScoreScreen(miMP);
+				
+				Screens.NEWSCREEN       = new NewUserScreen(miMP);
+				Screens.RECUPERARSCREEN = new RecuperarScreen(miMP);
+				Screens.LOGINSCREEN     = new UsersScreen(miMP);
+				//setScreen(Screens.GAMESCREEN);
+				setScreen(Screens.LOGINSCREEN);
+			}
 
 
-	}
+				
 	@Override
 	public void render () {
-
+		
 		//Primero hacer updates y luego dibujar
 
 		//El delta del movimiento pasarlo a traves del tiempo ( tutorial libgdx delta manbow2 )
@@ -127,104 +140,60 @@ public class Juego extends ApplicationAdapter {
 		Gdx.gl.glLineWidth(32);
 		Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		//Dibujamos el circulo blanco de fondo
-		/*batch.begin();
-		table.setPosition(width/2,height/2);
-		//table.setOrigin(width/2, height/2);
-		table.drawDebug(figurator);
-		table.draw(batch, width/2);
 
-		batch.end();
+		//Updates
+		actualizarRueda();
+		miPelota.update();
+		puntos.update();
 
-		 */
-
+		//Draws
 		batch.begin();
+		//Imagen de fondo
+		batch.draw(fondo, 0, 0,  width, height);
+		//Puntuación
 		puntuacion.draw(batch, ""+estrellas, width-20, height-20);
-		if(miPelota.choqueRueda()){
-			//System.out.println(miPelota.getAngulo());
-			font.setColor(miRueda.bordercolor(miPelota.getAngulo()));
-			//System.out.println(miPelota.getAngulo());
-			//System.out.println("angulo al chocar"+miPelota.getAngulo());
+		//Nombre del color
+		if(choqueBola){
+			font.setColor(colores[miRueda.bordercolor(miPelota.getAngulo()).ordinal()]);
+		
 
 		}
-		font.draw(batch, "Color", (-"Toca".length()+width)/2, height-10);
-
-
-
-
-		batch.end();
-		figurator.begin(ShapeType.Line.Filled);
-
-		figurator.setColor(Color.WHITE);
-		//circulo botones
-		//izq
-		figurator.circle(height/20-(bIzq.getWidth()/2)+(width/7), height/20+ width/12, height/20);
-		//der
-		figurator.circle( width-(height/20-(bIzq.getWidth()/2)+(width/7)), height/20+ width/12, height/20);
-		figurator.end();
-
-		//Dibujamos nuestro circulo de juego
-		batch.begin();
+		choqueBola=false;
+		font.draw(batch, "Color", -"Color".length()+width/2, height-10);
+		
+		//------Juego-----------------
+		//Circulo de juego
 		img.draw(batch);
-		batch.end();
-
-		//Metodo que nos 
-		actualizarRueda();
-		batch.begin();
+		//Pelota
 		miPelota.draw(batch);
+		//Puntos
 		puntos.draw(batch);
-		batch.end();
-		//Comprobacion posiciones
-		figurator.begin(ShapeType.Line.Filled);
-		figurator.setColor(Color.RED);
-		//figurator.circle(miPelota.getBordes().x,miPelota.getBordes().y,miPelota.getBordes().radius);
-		//figurator.circle(puntos.getBordes().x,puntos.getBordes().y,puntos.getBordes().radius);
-		figurator.circle(puntos.getX(),puntos.getY(), 3);
-		figurator.circle(miPelota.getPosicionX(),miPelota.getPosicionY(), 3);
-		figurator.end();
-
-
-
-
-
-
-
-
-
-
-		batch.begin();
-		//batch.draw(punto, xCirc,yCirc);
+		//Botones
 		btDer.draw(batch);
 		btIzq.draw(batch);
+		
 		batch.end();
 
 
 
-
-		//batch.dra
-		//batch.draw(img,xCirc,yCirc );
-		//batch.draw(bIzq, 45, 50);
-		//batch.draw(bDer, width-90, 50);
-		//batch.end();
-
-
+		
 
 	}
 
 
 	private void rotateLeft() {
 
-		img.setRotation(img.getRotation() -2);
+		img.setRotation(img.getRotation() -1);
 
 	}
 	private void rotateRight() {
 
-		img.setRotation(img.getRotation() + 2);
+		img.setRotation(img.getRotation() + 1);
 
 	}
-	public void actualizarRueda(){
+	synchronized public void actualizarRueda(){
 		if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)||btDer.sePulsaElBoton()){
-
+			miMP.show();
 			rotateRight();
 			miRueda.setRotacion(img.getRotation()-15);
 			figurator.begin(ShapeType.Line.Filled);
@@ -235,12 +204,15 @@ public class Juego extends ApplicationAdapter {
 
 
 		}else if(Gdx.input.isKeyPressed(Input.Keys.LEFT)|| btIzq.sePulsaElBoton()){
+			
+			
+			rotateLeft();
 			miRueda.setRotacion(img.getRotation()-15);
 			figurator.begin(ShapeType.Line.Filled);
 			figurator.setColor(Color.YELLOW);
 			figurator.circle(height/20-(bIzq.getWidth()/2)+(width/7), height/20+ width/12, height/20);
 			figurator.end();
-			rotateLeft();
+
 			//System.out.println(miRueda.getAngulo());
 
 		}
@@ -263,6 +235,13 @@ public class Juego extends ApplicationAdapter {
 	}
 	public void setWidth(int width) {
 		this.width = width;
+	}
+
+	public boolean isChoqueBola() {
+		return choqueBola;
+	}
+	public void setChoqueBola(boolean choqueBola) {
+		this.choqueBola = choqueBola;
 	}
 	public Pelota getMiPelota() {
 		return miPelota;
@@ -288,6 +267,7 @@ public class Juego extends ApplicationAdapter {
 	public void setEstrellas(int estrellas) {
 		this.estrellas = this.estrellas+estrellas;
 	}
+
 
 
 

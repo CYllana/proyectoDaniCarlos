@@ -2,7 +2,6 @@ package es.danicarlos.proyecto;
 
 import java.util.Random;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Circle;
@@ -18,10 +17,10 @@ public class Punto {
 
 	
 	
-	public Punto(Sprite textura,Juego miJuego, float radio) {
+	public Punto(Sprite textura,Juego miJuego) {
 		this.textura=textura;
 		this.miJuego=miJuego;
-		this.radio=radio;
+		this.radio=textura.getHeight();
 		textura.setCenterX(radio);
 		this.x=(+textura.getWidth()+miJuego.getWidth())/2+aleatorioX();
 		
@@ -85,7 +84,7 @@ public class Punto {
 
 	
 	private float radioAleatorio(){
-		double radioJuego= miJuego.getMiRueda().getRadio();
+		double radioJuego=miJuego.getMiRueda().getRadio();
 		Random rnd=new Random();
 		double valor=rnd.nextDouble()*radioJuego-textura.getHeight();
 	
@@ -112,7 +111,7 @@ public class Punto {
 	
 	
 	public void draw(SpriteBatch batch){
-		update();
+		
 		batch.draw(textura,x-textura.getHeight()/2,y-textura.getHeight()/2 );
 	}
 	
@@ -120,12 +119,7 @@ public class Punto {
 	public void update(){
 		if(colision()){
 			miJuego.setEstrellas(1);
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			
 			this.x=miJuego.getWidth()/2+aleatorioX();
 			this.y=miJuego.getHeight()/2+aleatorioY();
 			bordes.setPosition(x, y);

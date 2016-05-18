@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -19,8 +18,21 @@ public class Rueda {
 	private float rotacion;
 	private HashMap<Integer, Color> map;
 	private Juego miJuego;
-
-
+	private float transportX, transportY;
+	private Color colorChoque;
+	public enum miColor
+	{
+		YELLOW, GREEN, RED, BLACK,BLUE, ORANGE;
+	}
+	
+	public Rueda(Sprite miJuego, double radio, float xCentro, float yCentro) {
+		super();
+		img= miJuego;
+		this.radio=radio;
+		this.xCentro=xCentro;
+		this.yCentro=yCentro;
+		calculadorPosiciones(DIVISIONES,radio,xCentro,yCentro);
+	}
 
 
 	public Rueda(Sprite spriteRueda, double radio, float xCentro, float yCentro, Juego miJuego) {
@@ -73,6 +85,30 @@ public class Rueda {
 
 
 
+	public float getTransportX() {
+		return transportX;
+	}
+
+
+
+	public void setTransportX(float transportX) {
+		this.transportX = transportX+this.rotacion;
+	}
+
+
+
+	public float getTransportY() {
+		return transportY;
+	}
+
+
+
+	public void setTransportY(float transportY) {
+		this.transportY = transportY;
+	}
+
+
+
 	public double getRadio() {
 		return radio;
 	}
@@ -117,123 +153,177 @@ public class Rueda {
 
 
 	public float getRotacion() {
-	return rotacion;
+		return rotacion;
+	}
+
+
+
+	public void setRotacion(float rotacion) {
+
+		this.rotacion=rotacion%360;
+
+	}
+
+
+	public ArrayList<Vector2> calculadorPosiciones(int numeroDiv, double radio, float centroX, float centroY){
+		int angulo=360/numeroDiv;
+		float x;
+		float y;
+		int j=0;
+		MathUtils matUtils=new MathUtils();
+
+		ArrayList<Vector2> misPuntos= new ArrayList<Vector2>();
+
+		for(int i=0; i<361; i=i+angulo){
+
+			x=(centroX+(matUtils.cosDeg(i)*(float)radio));
+			y=(centroY+(matUtils.sinDeg(i)*(float)radio));
+			Vector2 miVector=new Vector2(x,y);
+			misPuntos.add(miVector);
+			//vertices[j]=x;
+			//vertices[j+1]=y;
+			j=j+2;
+		}
+
+		return misPuntos;
+
+	}
+	public miColor bordercolor(double anguloPelota){
+
+
+		if(rotacion<60&&rotacion>-120){
+			if(anguloPelota>=0 +rotacion&& anguloPelota<30+rotacion){
+				return miColor.YELLOW;
+			}else 	if(anguloPelota>=30+rotacion && anguloPelota<60+rotacion){
+				//negro
+				return miColor.BLACK;
+			}else 	if(anguloPelota>=60+rotacion && anguloPelota<90+rotacion){
+				//setTransportX(135);
+				return miColor.GREEN;
+			}
+			else if(anguloPelota>=90+rotacion && anguloPelota<120+rotacion){
+				return miColor.YELLOW;
+			}else if(anguloPelota>=120+rotacion && anguloPelota<150+rotacion){
+				//setTransportX(75);
+				return miColor.GREEN;
+			}else if(anguloPelota>=150+rotacion && anguloPelota<180+rotacion){
+				return miColor.ORANGE;		
+			}else if(anguloPelota>=180+rotacion && anguloPelota<210+rotacion){
+				return miColor.BLUE;
+			}else if(anguloPelota>=210+rotacion && anguloPelota<240+rotacion){
+				return miColor.RED;
+			}else if(anguloPelota>=240+rotacion && anguloPelota<270+rotacion){
+				return miColor.ORANGE;
+			}else if(anguloPelota>=270 +rotacion&& anguloPelota<300+rotacion){
+				return miColor.BLUE;
+			}else if(anguloPelota>=300+rotacion && anguloPelota<330+rotacion){
+				return miColor.BLUE;
+			}else if(anguloPelota>=330+rotacion && anguloPelota<360+rotacion){
+				return miColor.RED;
+			}else  {
+				System.out.println("rotacion="+rotacion+" angulo que Pelota="+anguloPelota+ "  color=negro");
+				System.out.println("FALLO");
+				//negro	
+				return miColor.GREEN;
+			}
+		}else if(rotacion>=240 ){
+			if(anguloPelota>=-360+rotacion&& anguloPelota<-330+rotacion){
+				return miColor.YELLOW;
+			}else 	if(anguloPelota>=-330+rotacion && anguloPelota<-300+rotacion){
+				return miColor.BLACK;
+			}else 	if(anguloPelota>=-300+rotacion && anguloPelota<-270+rotacion){
+				//setTransportX(360-225);
+				return miColor.GREEN;
+			}else if(anguloPelota>=-270+rotacion && anguloPelota<-240+rotacion){
+				return miColor.YELLOW;
+			}else if(anguloPelota>=-240+rotacion && anguloPelota<-210+rotacion){
+				//setTransportX(360-285);
+				return miColor.GREEN;
+			}else if(anguloPelota>=-210+rotacion && anguloPelota<-180+rotacion){
+				return miColor.ORANGE;
+			}else if(anguloPelota>=-180+rotacion && anguloPelota<-150+rotacion){
+				return miColor.BLUE;
+			}else if(anguloPelota>=-150+rotacion && anguloPelota<-120+rotacion){
+				return miColor.RED;
+			}else if(anguloPelota>=-120+rotacion && anguloPelota<-90+rotacion){
+				return miColor.ORANGE;
+			}else if(anguloPelota>=-90 +rotacion&& anguloPelota<-60+rotacion){
+				return miColor.BLACK;
+			}else if(anguloPelota>=-60+rotacion && anguloPelota<-30+rotacion){
+				return miColor.BLUE;
+			}else if(anguloPelota>=-30+rotacion && anguloPelota<0+rotacion){
+				return miColor.RED;
+			}else  {
+				System.out.println("rotacion="+rotacion+" angulo que Pelota="+anguloPelota+ "  color=verde");
+				System.out.println("FALLO");
+				//negro	
+				return miColor.BLACK;
+			}
+
+
+		}else if((rotacion>60 && rotacion<240)|(rotacion<-120)){
+			if(rotacion<-120){
+				rotacion=360-rotacion*-1;
+			}
+
+			if(anguloPelota>=0 +rotacion&& anguloPelota<30+rotacion){
+				return miColor.YELLOW;
+			}else 	if(anguloPelota>=30+rotacion && anguloPelota<60+rotacion){
+				//negro
+				return miColor.BLACK;
+			}else 	if(anguloPelota>=60+rotacion && anguloPelota<90+rotacion){
+				//setTransportX(135);
+				return miColor.GREEN;
+			}
+			else if(anguloPelota>=90+rotacion && anguloPelota<120+rotacion){
+				return miColor.YELLOW;
+			}else if(anguloPelota>=120+rotacion && anguloPelota<150+rotacion){
+				//setTransportX(75);
+				return miColor.GREEN;
+			}else if(anguloPelota>=150+rotacion && anguloPelota<180+rotacion){
+				return miColor.ORANGE;		
+			}else if(anguloPelota>=180+rotacion && anguloPelota<210+rotacion){
+				return miColor.BLUE;
+			}else if(anguloPelota>=-180+rotacion && anguloPelota<-150+rotacion){
+				return miColor.BLUE;
+			}else if(anguloPelota>=-150+rotacion && anguloPelota<-120+rotacion){
+				return miColor.RED;
+			}else if(anguloPelota>=-120+rotacion && anguloPelota<-90+rotacion){
+				return miColor.ORANGE;
+			}else if(anguloPelota>=-90 +rotacion&& anguloPelota<-60+rotacion){
+				return miColor.BLACK;
+			}else if(anguloPelota>=-60+rotacion && anguloPelota<-30+rotacion){
+				return miColor.BLUE;
+			}else if(anguloPelota>=-30+rotacion && anguloPelota<0+rotacion){
+				return miColor.RED;
+			}else  {
+				//System.out.println("rotacion="+rotacion+" angulo que Pelota="+anguloPelota+ "  color=verde");
+				System.out.println("FALLO");
+				//negro	
+				return miColor.BLACK;
+			}
+		}else{
+			System.out.println("rotacion="+rotacion+" angulo que Pelota="+anguloPelota+ "  color=amarillo");
+
+
+			System.out.println("FALLO");
+
+			//negro	
+			return miColor.BLACK;
+
+		}
+
+
+
+
+
+	}
+
+
 }
 
 
-
-public void setRotacion(float rotacion) {
-		this.rotacion=rotacion;
-	
-		/*if(rotacion>360){
-			this.rotacion=rotacion-360;
-		}else{
-			this.rotacion=rotacion;
-
-		}*/
-
-	}
-
-
-		public ArrayList<Vector2> calculadorPosiciones(int numeroDiv, double radio, float centroX, float centroY){
-			int angulo=360/numeroDiv;
-			float x;
-			float y;
-			int j=0;
-			MathUtils matUtils=new MathUtils();
-
-			ArrayList<Vector2> misPuntos= new ArrayList<Vector2>();
-
-			for(int i=0; i<361; i=i+angulo){
-
-				x=(centroX+(matUtils.cosDeg(i)*(float)radio));
-				y=(centroY+(matUtils.sinDeg(i)*(float)radio));
-				Vector2 miVector=new Vector2(x,y);
-				misPuntos.add(miVector);
-				//vertices[j]=x;
-				//vertices[j+1]=y;
-				j=j+2;
-			}
-
-			return misPuntos;
-
-		}
-		public Color bordercolor(double anguloPelota){
-			//System.out.println("rotacion="+rotacion+" angulo que Pelota="+anguloPelota);
-			Color miVariable=new Color();
-			/*if(rotacion>75){
-				anguloPelota=anguloPelota-rotacion;
-			}*/
-			
-			if(anguloPelota>=0 && anguloPelota<30){
-				//amarillo
-				System.out.println("rotacion="+rotacion+" angulo que Pelota="+anguloPelota+ "  color=amarillo");
-				return map.get(5);
-			}else 	if(anguloPelota>=30+rotacion && anguloPelota<60+rotacion){
-				System.out.println("rotacion="+rotacion+" angulo que Pelota="+anguloPelota+ "  color=negro");
-
-				//negro
-				return map.get(3);
-			}else 	if(anguloPelota>=60 && anguloPelota<90){
-				System.out.println("rotacion="+rotacion+" angulo que Pelota="+anguloPelota+ "  color=verde");
-
-				//verde
-				return map.get(6);
-			}
-			else if(anguloPelota>=90 && anguloPelota<120){
-				System.out.println("rotacion="+rotacion+" angulo que Pelota="+anguloPelota+ "  color=amarillo");
-
-				//amarillo
-				return map.get(5);
-			}else if(anguloPelota>=120 && anguloPelota<150){
-				System.out.println("rotacion="+rotacion+" angulo que Pelota="+anguloPelota+ "  color=verde");
-
-				//verde
-				return map.get(6);
-			}else if(anguloPelota>=150 && anguloPelota<180){
-				//naranja
-				System.out.println("rotacion="+rotacion+" angulo que Pelota="+anguloPelota+ "  color=naranja");
-
-				return map.get(4);
-			}else if(anguloPelota>=180 && anguloPelota<210){
-				System.out.println("rotacion="+rotacion+" angulo que Pelota="+anguloPelota+ "  color=azul");
-
-				//azul
-				return map.get(2);
-			}else if(anguloPelota>=210 && anguloPelota<240){
-				//rojo
-				System.out.println("rotacion="+rotacion+" angulo que Pelota="+anguloPelota+ "  color=rojo");
-
-				return map.get(1);
-			}else if(anguloPelota>=240 && anguloPelota<270){
-				//naranja
-				System.out.println("rotacion="+rotacion+" angulo que Pelota="+anguloPelota+ "  color=naranja");
-
-				return map.get(4);
-			}else if(anguloPelota>=270 && anguloPelota<300){
-				//negro
-				System.out.println("rotacion="+rotacion+" angulo que Pelota="+anguloPelota+ "  color=negro");
-
-				return map.get(3);
-			}else if(anguloPelota>=300 && anguloPelota<330){
-				System.out.println("rotacion="+rotacion+" angulo que Pelota="+anguloPelota+ "  color=azul");
-
-				//azul
-				return map.get(2);
-			}else {
-				System.out.println("rotacion="+rotacion+" angulo que Pelota="+anguloPelota+ "  color=negro");
-
-				//negro	
-				return map.get(3);
-			}
-
-		}
-
-
-	}
-
-
-	/*map = new HashMap<Integer, Color>();
+/*map = new HashMap<Integer, Color>();
 map.put(1, Color.RED);		map.put(7, Color.GREEN);
 map.put(2, Color.BLUE);		map.put(8, Color.GRAY);
 map.put(3, Color.BLACK);	
@@ -243,7 +333,7 @@ map.put(6, Color.PURPLE);
 vertices=new float[27];
 graficos=new Graph()*/
 
-	/*//polygon vertices
+/*//polygon vertices
 /*figurator.begin(ShapeType.Line.Filled);
 figurator.polygon(vertices);
 figurator.end();
