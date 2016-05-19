@@ -10,13 +10,12 @@ public class BotonNew extends Boton {
 	public BotonNew(float centroXPantalla, float centroYPantalla, String nomb) {
 		super(centroXPantalla, centroYPantalla, nomb);
 		this.nomb=nomb;
-		switch(nomb){
-		case "NEW":
+		if (nomb.equals("NEW")) {
 			texture = new Texture(Gdx.files.internal("registrar.png"));
-			break;
-		case "RECUPERAR":
+
+		} else if (nomb.equals("RECUPERAR")) {
 			texture = new Texture(Gdx.files.internal("recuperar.png"));
-			break;
+
 		}
 		
 	}
@@ -24,14 +23,13 @@ public class BotonNew extends Boton {
 	@Override
 	protected void funcionamiento() {
 		System.out.println("hola1");
-		switch(nomb){
-		case "NEW":
+		if (nomb.equals("NEW")) {
 			System.out.println("hola");
 			Screens.juego.setScreen(Screens.NEWSCREEN);
-			break;
-		case "RECUPERAR":
+
+		} else if (nomb.equals("RECUPERAR")) {
 			Screens.juego.setScreen(Screens.RECUPERARSCREEN);
-			break;
+
 		}
 		
 		

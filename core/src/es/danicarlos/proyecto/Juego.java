@@ -40,6 +40,7 @@ public class Juego  extends Game {
 	private Punto puntos;
 	private int estrellas;
 	private int tiempo;
+	private float scale;
 	private boolean choqueBola;
 	private Color[] colores={Color.YELLOW, Color.GREEN, Color.RED, Color.BLACK,Color.BLUE, Color.ORANGE};
 	private MainProyecto miMP;
@@ -50,6 +51,7 @@ public class Juego  extends Game {
 		miMP=new MainProyecto();
 		Gdx.graphics.setWindowedMode(460,600);
 		font=new BitmapFont();
+		font.getData().scale(width/15);
 		puntuacion=new BitmapFont();
 		estrellas=0;
 		height=Gdx.graphics.getHeight();
@@ -57,7 +59,7 @@ public class Juego  extends Game {
 		batch = new SpriteBatch();
 		choqueBola=false;
 		
-	
+		scale=height/width;
 		imgTexture = new Texture("miJuegof.png");
 		fondo= new Texture("fondo.jpg");
 		//img=new Sprite(imgTexture);
@@ -153,13 +155,15 @@ public class Juego  extends Game {
 		//Puntuación
 		puntuacion.draw(batch, ""+estrellas, width-20, height-20);
 		//Nombre del color
+		
+		font.getData().setScale( 2.0f,2.0f);
 		if(choqueBola){
 			font.setColor(colores[miRueda.bordercolor(miPelota.getAngulo()).ordinal()]);
 		
 
 		}
 		choqueBola=false;
-		font.draw(batch, "Color", -"Color".length()+width/2, height-10);
+		font.draw(batch, "Color", (-"Color".length()+width)/2, height-10);
 		
 		//------Juego-----------------
 		//Circulo de juego
@@ -193,7 +197,6 @@ public class Juego  extends Game {
 	}
 	synchronized public void actualizarRueda(){
 		if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)||btDer.sePulsaElBoton()){
-			miMP.show();
 			rotateRight();
 			miRueda.setRotacion(img.getRotation()-15);
 			figurator.begin(ShapeType.Line.Filled);
@@ -267,6 +270,7 @@ public class Juego  extends Game {
 	public void setEstrellas(int estrellas) {
 		this.estrellas = this.estrellas+estrellas;
 	}
+	
 
 
 

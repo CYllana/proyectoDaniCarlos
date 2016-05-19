@@ -11,33 +11,31 @@ public class BotonValidar extends Boton {
 		super(centroXPantalla, centroYPantalla,"Validar");
 		this.nomb=nomb;
 		//texture = new Texture(Gdx.files.internal("buttonValidar.png"));
-		
-		switch(nomb){
-		case "VALIDAR":
+
+		if (nomb.equals("VALIDAR")) {
 			texture = new Texture(Gdx.files.internal("inicia.png"));
-			break;
-		case "GUARDAR":
+
+		} else if (nomb.equals("GUARDAR")) {
 			texture = new Texture(Gdx.files.internal("guardar.png"));
-			break;
-		case "ENVIAR":
+
+		} else if (nomb.equals("ENVIAR")) {
 			texture = new Texture(Gdx.files.internal("enviar.png"));
-			break;
+
 		}
 	}
 
 	@Override
 	protected void funcionamiento() {
 		// TODO Auto-generated method stub
-		switch(nomb){
-		case "VALIDAR":
+		if (nomb.equals("VALIDAR")) {
 			Screens.juego.setScreen(Screens.MAINSCREEN);
-			break;
-		case "GUARDAR":
+
+		} else if (nomb.equals("GUARDAR")) {
 			Screens.juego.setScreen(Screens.LOGINSCREEN);
-			break;
-		case "ENVIAR":
+
+		} else if (nomb.equals("ENVIAR")) {
 			Screens.juego.setScreen(Screens.LOGINSCREEN);
-			break;
+
 		}
 		System.out.println("pasa");
 		

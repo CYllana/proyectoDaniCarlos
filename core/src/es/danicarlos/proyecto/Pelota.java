@@ -16,20 +16,20 @@ public class Pelota {
 	private float posicionX, posicionY, antiguaX, antiguaY;
 	private float radio;
 	private Juego miJuego;
-	private float xa =SPEED;
-	private float ya =SPEED;
-	
+	private float xa;
+	private float ya;
+
 	private Vector2 miVectorUni;
 	private Juego juego;
 	private int modoRebote;
 	public enum miColor
 	{
-	   YELLOW, GREEN, RED, BLACK,BLUE, ORANGE;
+		YELLOW, GREEN, RED, BLACK,BLUE, ORANGE;
 	}
-	
-	
+
+
 	private double angulo;
-	
+
 	public Pelota(Sprite textura,float x, float y, Rueda miRueda){
 		this.textura= textura;
 		//bordes=new Circle(x,y, textura.getHeight());
@@ -54,6 +54,20 @@ public class Pelota {
 		miVectorUni= new Vector2();
 		juego=miJuego;
 		bordes=new Circle(posicionX,posicionY, radio);
+		float direccion=inicioAleatorio();
+		this.xa =SPEED*direccion;
+		if(direccion==0){
+			ya=0;
+			while(ya==0){
+				System.out.println("edsss");
+				direccion=inicioAleatorio();
+				this.ya =SPEED*direccion;
+			}
+
+		}else{
+			this.ya =SPEED*direccion;
+		}
+
 
 	}
 
@@ -98,7 +112,7 @@ public class Pelota {
 	public void setAngulo(double angulo) {
 		this.angulo =this.angulo+ angulo;
 	}
-	
+
 	public float getAntiguaX() {
 		return antiguaX;
 	}
@@ -111,12 +125,12 @@ public class Pelota {
 	public void setAntiguaY(float antiguaY) {
 		this.antiguaY = antiguaY;
 	}
-	
-	
-	
+
+
+
 	//Metodo que printa
 	public void draw(SpriteBatch batch){
-		
+
 		batch.draw(textura, posicionX-textura.getHeight()/2, posicionY-textura.getHeight()/2);
 	}
 
@@ -127,7 +141,7 @@ public class Pelota {
 	}
 	public boolean choqueRueda(){
 		double distancia=distanciaPuntos(posicionX,posicionY,miJuego.getMiRueda().getxCentro(),miJuego.getMiRueda().getyCentro());
-	 	int retval = Double.compare(distancia,(double) miJuego.getMiRueda().getRadio()-radio);	
+		int retval = Double.compare(distancia,(double) miJuego.getMiRueda().getRadio()-radio);	
 		if(retval>0){
 			return true;
 		}
@@ -148,11 +162,11 @@ public class Pelota {
 		if(choqueRueda()){
 			miJuego.setChoqueBola(true);
 			int miColor=miJuego.getMiRueda().bordercolor(getAngulo()).ordinal();
-			
+
 			miJuego.setChoqueBola(true);
 			//System.out.println(modoRebote);
 			if(miColor==1){
-				reboteAleatorio();
+				transporter();
 				System.out.println("Aleatorio");
 			}else if(miColor==2){
 				System.out.println("Return");
@@ -161,13 +175,15 @@ public class Pelota {
 			}else if(miColor==3){
 				System.out.println("Vertical");
 
-				revoteVertical();
+				gameOver();
 			}else if (miColor==4){
 				System.out.println("Horizontal");
 				//revoteHorizontal();
+				revoteHorizontal();
+			}else if(miColor==0){
 				reboteAleatorio();
-			}else if(miColor==5){
-				reboteAleatorio();
+
+
 
 			}else if(miColor==6){
 				revoteDiagonal();
@@ -185,7 +201,7 @@ public class Pelota {
 			posicionY=posicionY+ya;
 			bordes.setX(posicionX);
 			bordes.setY(posicionY);
-			
+
 
 		}else{
 			//miJuego.setChoqueBola(false);
@@ -197,9 +213,22 @@ public class Pelota {
 		}
 
 	}
-	
-	
-	
+	private float inicioAleatorio(){
+		Random rnd=new Random();
+		float posneg=rnd.nextInt(3)+1;
+		System.out.println("random=" +posneg);
+		if(posneg==3){
+			posneg=0;
+		}
+		else if(posneg==1){
+			posneg=1;
+		}else{
+			posneg=-1;
+		}
+		return posneg;
+	}
+
+
 	private float puntoAleatorio(){
 		Random rnd=new Random();
 		float valor=rnd.nextInt(4);
@@ -211,7 +240,7 @@ public class Pelota {
 		}
 		return posneg*valor;
 	}
-public double getAngulo(){
+	public double getAngulo(){
 		//System.out.println((-juego.getMiRueda().getxCentro()+this.posicionX)/(juego.getMiRueda().getRadio()));
 		double rad=Math.acos((-juego.getMiRueda().getxCentro()+this.posicionX)/(juego.getMiRueda().getRadio()-radio));
 		if(this.posicionY>juego.getMiRueda().getyCentro()){
@@ -245,8 +274,8 @@ public double getAngulo(){
 			}
 		}
 	}
-	
-	
+
+
 	private void revoteReturn(){
 		if(choqueRueda()){
 			//reboteAleatorio();
@@ -259,26 +288,26 @@ public double getAngulo(){
 
 	}
 
-	
+
 	private void revoteNormal(){
 		//++
 		calcularAngulo();
 		while(!siguienteValido(xa, ya)){
 
-		if(xa>0 &&ya>0){
-			xa=xa*-1;		
-		}
-		//-+
-		else if(xa<0 && ya>0){
-			ya=ya*-1;
-		//--	
-		}else if(xa<0&&ya<0){
-			xa=xa*-1;
-		//+-
-		}else if(xa<0&&ya<0){
-			ya=ya*-1;
+			if(xa>0 &&ya>0){
+				xa=xa*-1;		
+			}
+			//-+
+			else if(xa<0 && ya>0){
+				ya=ya*-1;
+				//--	
+			}else if(xa<0&&ya<0){
+				xa=xa*-1;
+				//+-
+			}else if(xa<0&&ya<0){
+				ya=ya*-1;
 
-		}
+			}
 		}
 
 	}
@@ -297,6 +326,7 @@ public double getAngulo(){
 			ya=+SPEED;
 
 		}
+		System.out.println("x-->"+xa+"  y-->"+ya);
 	}
 	private void revoteDiagonal(){
 		xa=-SPEED;
@@ -310,19 +340,19 @@ public double getAngulo(){
 	private void gameOver(){
 		xa=0;
 		ya=0;
-	
+
 	}
 	private void transporter(){
 		xa=0;
+		double cos=Math.cos(Math.toRadians(miJuego.getMiRueda().getTransportX()));
 		ya=0;
-		posicionX=miJuego.getMiRueda().getxCentro()+(float) ((miJuego.getMiRueda().getRadio()-radio)*(Math.cos(Math.toRadians(miJuego.getMiRueda().getTransportX()))));
+		posicionX=miJuego.getMiRueda().getxCentro()+(float) ((miJuego.getMiRueda().getRadio()-radio)*(cos));
 		double sin =Math.sin(Math.toRadians(miJuego.getMiRueda().getTransportX()));
-		System.out.println();
-		posicionY=miJuego.getMiRueda().getyCentro()+(float) ((miJuego.getMiRueda().getRadio()-radio)* (sin));
-		
+		//System.out.println();
+		posicionY=miJuego.getMiRueda().getyCentro()+(float) ((miJuego.getMiRueda().getRadio()-radio)*(sin));
 		System.out.println("sin="+sin+"     "+posicionX+" posiciones"+ posicionY +"angulo"+miJuego.getMiRueda().getTransportX());
-	
-	
+		reboteAleatorio();
+
 	}
 	private boolean siguienteValido(float xa, float xy){
 		double distancia=distanciaPuntos(posicionX+xa,posicionY+ya,miJuego.getMiRueda().getxCentro(),miJuego.getMiRueda().getyCentro());
@@ -332,12 +362,12 @@ public double getAngulo(){
 		}else{
 			return true;
 		}
-	
-	
+
+
 	}
 	private float calcularAngulo(){
-		
-		
+
+
 		return 3;
 	}
 

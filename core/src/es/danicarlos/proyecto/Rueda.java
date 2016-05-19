@@ -198,13 +198,13 @@ public class Rueda {
 				//negro
 				return miColor.BLACK;
 			}else 	if(anguloPelota>=60+rotacion && anguloPelota<90+rotacion){
-				//setTransportX(135);
+				setTransportX(135);
 				return miColor.GREEN;
 			}
 			else if(anguloPelota>=90+rotacion && anguloPelota<120+rotacion){
 				return miColor.YELLOW;
 			}else if(anguloPelota>=120+rotacion && anguloPelota<150+rotacion){
-				//setTransportX(75);
+				setTransportX(75);
 				return miColor.GREEN;
 			}else if(anguloPelota>=150+rotacion && anguloPelota<180+rotacion){
 				return miColor.ORANGE;		
@@ -215,7 +215,7 @@ public class Rueda {
 			}else if(anguloPelota>=240+rotacion && anguloPelota<270+rotacion){
 				return miColor.ORANGE;
 			}else if(anguloPelota>=270 +rotacion&& anguloPelota<300+rotacion){
-				return miColor.BLUE;
+				return miColor.BLACK;
 			}else if(anguloPelota>=300+rotacion && anguloPelota<330+rotacion){
 				return miColor.BLUE;
 			}else if(anguloPelota>=330+rotacion && anguloPelota<360+rotacion){
@@ -232,12 +232,12 @@ public class Rueda {
 			}else 	if(anguloPelota>=-330+rotacion && anguloPelota<-300+rotacion){
 				return miColor.BLACK;
 			}else 	if(anguloPelota>=-300+rotacion && anguloPelota<-270+rotacion){
-				//setTransportX(360-225);
+				setTransportX(360-225);
 				return miColor.GREEN;
 			}else if(anguloPelota>=-270+rotacion && anguloPelota<-240+rotacion){
 				return miColor.YELLOW;
 			}else if(anguloPelota>=-240+rotacion && anguloPelota<-210+rotacion){
-				//setTransportX(360-285);
+				setTransportX(360-285);
 				return miColor.GREEN;
 			}else if(anguloPelota>=-210+rotacion && anguloPelota<-180+rotacion){
 				return miColor.ORANGE;
@@ -269,16 +269,15 @@ public class Rueda {
 			if(anguloPelota>=0 +rotacion&& anguloPelota<30+rotacion){
 				return miColor.YELLOW;
 			}else 	if(anguloPelota>=30+rotacion && anguloPelota<60+rotacion){
-				//negro
 				return miColor.BLACK;
 			}else 	if(anguloPelota>=60+rotacion && anguloPelota<90+rotacion){
-				//setTransportX(135);
+				setTransportX(135);
 				return miColor.GREEN;
 			}
 			else if(anguloPelota>=90+rotacion && anguloPelota<120+rotacion){
 				return miColor.YELLOW;
 			}else if(anguloPelota>=120+rotacion && anguloPelota<150+rotacion){
-				//setTransportX(75);
+				setTransportX(75);
 				return miColor.GREEN;
 			}else if(anguloPelota>=150+rotacion && anguloPelota<180+rotacion){
 				return miColor.ORANGE;		

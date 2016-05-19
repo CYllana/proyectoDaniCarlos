@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -102,7 +103,15 @@ public class UsersScreen extends AbstractScreen  {
 	}
 	
 	public void creacionBtns(){
+
+		/*game.manager.load("uiskin.json", Skin.class);
+		skin = game.manager.get("uiskin.json", Skin.class);*/
+
+		/*TextureAtlas miTexture= new TextureAtlas("uiskin.json");
+		Skin skin = new Skin(miTexture);*/
+
 		Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
+
 		btnLogin = new TextButton("Validar", skin);
 		
 		float anchuraBtn = width/3;

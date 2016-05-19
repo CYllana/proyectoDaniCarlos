@@ -7,12 +7,11 @@ import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 
 import es.danicarlos.proyecto.Juego;
 import es.danicarlos.ventanas.MainProyecto;
-
 public class AndroidLauncher extends AndroidApplication {
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-		initialize(new MainProyecto(), config);
+		initialize(new Juego(), config);
 	}
 }

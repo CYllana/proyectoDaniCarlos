@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
@@ -89,7 +90,8 @@ public class NewUserScreen extends AbstractScreen  {
 	
 	
 	public void creacionBtns(){
-		Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
+		TextureAtlas miTextura=new TextureAtlas(Gdx.files.internal("uiskin.json"));
+		Skin skin = new Skin(miTextura);
 		
 		float anchuraBtn = width/2;
 		float alturaBtn = height/12;

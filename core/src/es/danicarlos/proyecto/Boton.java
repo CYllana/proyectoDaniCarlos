@@ -21,14 +21,8 @@ public abstract class Boton {
 		yMinima = Gdx.graphics.getHeight() - (bordes.y + bordes.height);
 	}
 	public Boton(float centroXPantalla, float centroYPantalla,String nomb) {
-		switch (nomb){
-		case "Validar":
-		
-			break;
-		case "NewRec":
-			
-			break;
-			
+		if (nomb.equals("Validar")) {
+		} else if (nomb.equals("NewRec")) {
 		}
 			
 		bordes = new Rectangle(centroXPantalla-Gdx.graphics.getWidth()/6, centroYPantalla-Gdx.graphics.getHeight()/13,Gdx.graphics.getWidth()/3,Gdx.graphics.getHeight()/7); 	

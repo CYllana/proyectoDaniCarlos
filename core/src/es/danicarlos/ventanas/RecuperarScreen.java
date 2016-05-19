@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -93,7 +94,8 @@ public class RecuperarScreen extends AbstractScreen  {
 	
 	
 	public void creacionBtns(){
-		Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
+		TextureAtlas miTexture= new TextureAtlas(Gdx.files.internal("uiskin.json"));
+		Skin skin = new Skin(miTexture);
 		
 		float anchuraBtn = width/2;
 		float alturaBtn = height/12;

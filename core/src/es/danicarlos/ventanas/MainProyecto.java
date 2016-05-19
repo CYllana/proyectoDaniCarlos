@@ -45,11 +45,7 @@ public class MainProyecto extends Game {
 		
 	}
 	
-	public void show(){
-		//setScreen(Screens.LOGINSCREEN);
-		//Screens.LOGINSCREEN.show();
-		//System.out.println("pasoo");
-	}
+	
 
 	public static  SpriteBatch getbatch(){
 		return batch;
