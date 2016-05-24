@@ -12,25 +12,35 @@ public abstract class Boton {
 	protected float yMinima;
 	protected float xMaxima;
 	protected float yMaxima;
+	protected float height = Gdx.graphics.getHeight();
+	protected float width = Gdx.graphics.getWidth();
+	
 	public Boton(float centroXPantalla, float centroYPantalla) {
 		bordes = new Rectangle(centroXPantalla, centroYPantalla,75,75); //textura.getWidth(), textura.getHeight());	
 		// Permite asignar los bordes del botón para su correcto funcionamiento.
 		xMinima = bordes.x;
-		yMaxima = Gdx.graphics.getHeight() - bordes.y;
+		yMaxima = height - bordes.y;
 		xMaxima = bordes.x + bordes.width;
-		yMinima = Gdx.graphics.getHeight() - (bordes.y + bordes.height);
+		yMinima = height - (bordes.y + bordes.height);
 	}
 	public Boton(float centroXPantalla, float centroYPantalla,String nomb) {
-		if (nomb.equals("Validar")) {
-		} else if (nomb.equals("NewRec")) {
+		if (nomb.equals("NEW") || nomb.equals("RECUPERAR")) {
+			bordes = new Rectangle(centroXPantalla-width/6, centroYPantalla-height/13,width/6,height/14);
+			// Permite asignar los bordes del botón para su correcto funcionamiento.
+			xMinima = bordes.x;
+			yMaxima = height - bordes.y;
+			xMaxima = bordes.x + bordes.width;
+			yMinima = height - (bordes.y + bordes.height);
+		} else {
+			bordes = new Rectangle(centroXPantalla-width/6, centroYPantalla-height/13,width/3,height/7);
+			// Permite asignar los bordes del botón para su correcto funcionamiento.
+			xMinima = bordes.x;
+			yMaxima = height - bordes.y;
+			xMaxima = bordes.x + bordes.width;
+			yMinima = height - (bordes.y + bordes.height);
 		}
 			
-		bordes = new Rectangle(centroXPantalla-Gdx.graphics.getWidth()/6, centroYPantalla-Gdx.graphics.getHeight()/13,Gdx.graphics.getWidth()/3,Gdx.graphics.getHeight()/7); 	
-		// Permite asignar los bordes del botón para su correcto funcionamiento.
-		xMinima = bordes.x;
-		yMaxima = Gdx.graphics.getHeight() - bordes.y;
-		xMaxima = bordes.x + bordes.width;
-		yMinima = Gdx.graphics.getHeight() - (bordes.y + bordes.height);
+		
 	}
 
 	public void draw(SpriteBatch batch) {
@@ -38,6 +48,10 @@ public abstract class Boton {
 	}
 
 	public void update() {
+		xMinima = bordes.x;
+		yMaxima = height - bordes.y;
+		xMaxima = bordes.x + bordes.width;
+		yMinima = height - (bordes.y + bordes.height);
 		if(sePulsaElBoton())
 			funcionamiento();
 	}

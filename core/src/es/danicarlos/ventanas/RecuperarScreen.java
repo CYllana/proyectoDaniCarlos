@@ -14,20 +14,20 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 
+import es.danicarlos.botones.BotonExit;
 import es.danicarlos.botones.BotonValidar;
 
 public class RecuperarScreen extends AbstractScreen  {
 	private SpriteBatch batch;
 	private Stage stage;
-	private TextButton btnLogin;
-	private TextField txtID,txtCorreo,txtNombre,txtPassword,txtPassword2;
+	private TextField txtID,txtCorreo;
 	private float centroX,centroY;
 	private Texture texture;
-	private ShapeRenderer figurator;
-	private BitmapFont lblUsuario,lblPassword,lblID,lblPassword2,lblError,lblCorreo;
+	private BitmapFont lblID,lblError,lblCorreo;
 	private String error;
 	private BotonValidar btnEnviar;
 	private float width, height;
+	private BotonExit btnAtras;
 	public RecuperarScreen(MainProyecto main) {
 		super(main);
 		// TODO Auto-generated constructor stub
@@ -38,7 +38,6 @@ public class RecuperarScreen extends AbstractScreen  {
 		Gdx.input.setInputProcessor(stage);
 		batch= MainProyecto.getbatch();
 		texture = new Texture("fondo7.png");
-		figurator = new ShapeRenderer();
 		
 		height = Gdx.graphics.getHeight();
 		width  = Gdx.graphics.getWidth();
@@ -48,12 +47,34 @@ public class RecuperarScreen extends AbstractScreen  {
 		creacionBtns();
 		
 		btnEnviar = new BotonValidar(centroX,(float) (centroY-height /2.5),"ENVIAR");
+		btnAtras = new BotonExit(width/9,height/20,"LOGIN");
 		
-		
-		lblID 		 = new BitmapFont();
-		lblCorreo 	 = new BitmapFont();
-		lblError 	 = new BitmapFont();
-		error=" ";		
+		lblID 		 = new BitmapFont(Gdx.files.internal("comic.fnt"),Gdx.files.internal("comic.png"),false);
+		lblCorreo 	 = new BitmapFont(Gdx.files.internal("comic.fnt"),Gdx.files.internal("comic.png"),false);
+		lblError 	 = new BitmapFont(Gdx.files.internal("comic.fnt"),Gdx.files.internal("comic.png"),false);
+		error=" ";
+
+		switch(Gdx.app.getType()) {
+			case Android:
+				// android specific code
+				lblID.getData().setScale( 1.0f,1.0f);
+				lblCorreo.getData().setScale( 1.0f,1.0f);
+				lblError.getData().setScale( 1.0f,1.0f);
+				System.out.println("andr");
+				break;
+			case Desktop:
+				// desktop specific code
+				lblID.getData().setScale( 0.7f,0.7f);
+				lblCorreo.getData().setScale( 0.7f,0.7f);
+				lblError.getData().setScale( 0.7f,0.7f);
+				System.out.println("desk");
+				break;
+			default:
+				lblID.getData().setScale( 1.0f,1.0f);
+				lblCorreo.getData().setScale( 1.0f,1.0f);
+				lblError.getData().setScale( 1.0f,1.0f);
+				break;
+		}
 		
 	}
 
@@ -61,20 +82,12 @@ public class RecuperarScreen extends AbstractScreen  {
 		Gdx.gl.glClearColor(0, 0, 0, (float) 0.5);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		btnEnviar.update();
-		
+		btnAtras.update();
 		
 		batch.begin();		
 		batch.draw(texture, 0, 0, width, height);
-		batch.end();
-		
-		figurator.begin(ShapeType.Filled);
-		figurator.setColor(Color.GRAY);
-		//figurator.circle(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, Gdx.graphics.getWidth() / 3);
-		//figurator.rect(Gdx.graphics.getWidth() / 4,Gdx.graphics.getHeight() / 4 , Gdx.graphics.getWidth() / 2 , Gdx.graphics.getHeight() / 2 );
-		figurator.end();
-		
-		batch.begin();
 		btnEnviar.draw(batch);
+		btnAtras.draw(batch);
 		lblID.draw(batch, "ID", width/ 4,height / 2+(height / 7) +txtID.getHeight());
 		lblCorreo.draw(batch, "Correo", width / 4,height / 2+txtID.getHeight() );	
 		
@@ -94,8 +107,7 @@ public class RecuperarScreen extends AbstractScreen  {
 	
 	
 	public void creacionBtns(){
-		TextureAtlas miTexture= new TextureAtlas(Gdx.files.internal("uiskin.json"));
-		Skin skin = new Skin(miTexture);
+		Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
 		
 		float anchuraBtn = width/2;
 		float alturaBtn = height/12;
@@ -119,9 +131,9 @@ public class RecuperarScreen extends AbstractScreen  {
 	
 	public void dispose(){
 		stage.dispose();
-		figurator.dispose();
 		lblError.dispose();
-		lblPassword.dispose();
-		lblUsuario.dispose();
+		lblID.dispose();
+		lblCorreo.dispose();
+		batch.dispose();
 	}
 }

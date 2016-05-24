@@ -1,13 +1,11 @@
 package es.danicarlos.ventanas;
 
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -16,10 +14,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 
 import es.danicarlos.botones.BotonExit;
 import es.danicarlos.botones.BotonNew;
+import es.danicarlos.botones.BotonPlay;
+import es.danicarlos.botones.BotonPuntuaciones;
 import es.danicarlos.botones.BotonValidar;
-import es.danicarlos.proyecto.Juego;
 
-public class UsersScreen extends AbstractScreen  {
+public class PauseScreen extends AbstractScreen  {
 	private SpriteBatch batch;
 	private Stage stage;
 	private TextButton btnLogin;
@@ -33,36 +32,18 @@ public class UsersScreen extends AbstractScreen  {
 	private BotonNew btnCre,btnRec ;
 	private BotonExit btnAtras;
 	private float width, height;
-	public UsersScreen(MainProyecto juego) {
+	public PauseScreen(MainProyecto juego) {
 		super(juego);
 		// TODO Auto-generated constructor stub
 		
 	}
 	public void show(){
-		stage=new Stage();
-		Gdx.input.setInputProcessor(stage);
+		Gdx.graphics.setWindowedMode(460, 600);
 		batch= MainProyecto.getbatch();
-		texture = new Texture("fondo7.png");
+		texture = new Texture("miJuegoMenu.png");
 
-		height=Gdx.graphics.getHeight();
-		width=Gdx.graphics.getWidth();
-		centroY = height / 2 ; // Centro en el eje x de la pantalla centrando el botón
-		centroX = width / 2 ; // Centro en el eje y de la pantalla centrando el botón
-		creacionBtns();
-		
-		btnAtras = new BotonExit(width/9,height/20,"EXIT");
-		btnLog = new BotonValidar(centroX,centroY-Gdx.graphics.getHeight() / 7,"VALIDAR");
-		btnCre = new BotonNew(centroX,centroY-Gdx.graphics.getHeight() / 5,"NEW");
-		btnCre.getBordes().setWidth(btnLog.getBordes().getWidth()/2);
-		btnCre.getBordes().setHeight(btnLog.getBordes().getHeight()/2);
-
-		btnRec = new BotonNew(btnLog.getX()+btnLog.getBordes().getWidth(),centroY-height / 5,"RECUPERAR");
-		btnRec.getBordes().setWidth(btnLog.getBordes().getWidth()/2);
-		btnRec.getBordes().setHeight(btnLog.getBordes().getHeight()/2);
-		lblUsuario = new BitmapFont(Gdx.files.internal("comic.fnt"),Gdx.files.internal("comic.png"),false);
-		lblPassword = new BitmapFont(Gdx.files.internal("comic.fnt"),Gdx.files.internal("comic.png"),false);
-		lblError = new BitmapFont(Gdx.files.internal("comic.fnt"),Gdx.files.internal("comic.png"),false);
-		error="";
+		centroY = Gdx.graphics.getHeight() / 2 ; // Centro en el eje y de la pantalla centrando el botón
+		centroX = Gdx.graphics.getWidth() / 2; // Centro en el eje x de la pantalla centrando el botón
 		
 		
 		switch(Gdx.app.getType()) {		

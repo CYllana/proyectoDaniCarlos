@@ -19,7 +19,7 @@ public class BotonPlay extends Boton{
 	protected void funcionamiento() {
 		System.out.println("play");
 		 // Se asigna la pantalla de juego
-		//Screens.juego.setScreen(Screens.GAMESCREEN);
+		Screens.juego.setScreen(Screens.GAMESCREEN);
 		
 		
 	}

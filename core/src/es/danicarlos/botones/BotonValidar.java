@@ -37,7 +37,6 @@ public class BotonValidar extends Boton {
 			Screens.juego.setScreen(Screens.LOGINSCREEN);
 
 		}
-		System.out.println("pasa");
 		
 	}
 

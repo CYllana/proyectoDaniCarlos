@@ -9,6 +9,6 @@ import es.danicarlos.ventanas.MainProyecto;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		new LwjglApplication(new Juego(), config);
+		new LwjglApplication(new MainProyecto(), config);
 	}
 }

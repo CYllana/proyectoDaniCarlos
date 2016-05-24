@@ -22,9 +22,7 @@ public class BotonNew extends Boton {
 
 	@Override
 	protected void funcionamiento() {
-		System.out.println("hola1");
 		if (nomb.equals("NEW")) {
-			System.out.println("hola");
 			Screens.juego.setScreen(Screens.NEWSCREEN);
 
 		} else if (nomb.equals("RECUPERAR")) {

@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldFilter;
 
+import es.danicarlos.botones.BotonExit;
 import es.danicarlos.botones.BotonValidar;
 
 public class NewUserScreen extends AbstractScreen  {
@@ -23,8 +24,8 @@ public class NewUserScreen extends AbstractScreen  {
 	private BitmapFont lblUsuario,lblPassword,lblID,lblPassword2,lblError,lblCorreo;
 	private String error;
 	private BotonValidar btnGuardar ;
+	private BotonExit btnAtras;
 	private float width, height;
-	TextFieldFilter filter;
 	public NewUserScreen(MainProyecto main) {
 		super(main);
 		// TODO Auto-generated constructor stub
@@ -47,27 +48,58 @@ public class NewUserScreen extends AbstractScreen  {
 		creacionBtns();
 		
 		btnGuardar = new BotonValidar(centroX,(float) (centroY-height /2.5),"GUARDAR");
+		btnAtras = new BotonExit(width/9,height/20,"LOGIN");
 		
-		
-		lblID 		 = new BitmapFont();
-		lblUsuario   = new BitmapFont();
-		lblCorreo 	 = new BitmapFont();
-		lblPassword  = new BitmapFont();
-		lblPassword2 = new BitmapFont();
-		lblError 	 = new BitmapFont();
-		error="";		
-		
+		lblID 		 = new BitmapFont(Gdx.files.internal("comic.fnt"),Gdx.files.internal("comic.png"),false);
+		lblUsuario   = new BitmapFont(Gdx.files.internal("comic.fnt"),Gdx.files.internal("comic.png"),false);
+		lblCorreo 	 = new BitmapFont(Gdx.files.internal("comic.fnt"),Gdx.files.internal("comic.png"),false);
+		lblPassword  = new BitmapFont(Gdx.files.internal("comic.fnt"),Gdx.files.internal("comic.png"),false);
+		lblPassword2 = new BitmapFont(Gdx.files.internal("comic.fnt"),Gdx.files.internal("comic.png"),false);
+		lblError 	 = new BitmapFont(Gdx.files.internal("comic.fnt"),Gdx.files.internal("comic.png"),false);
+		error="";
 
+		switch(Gdx.app.getType()) {
+			case Android:
+				// android specific code
+				lblID.getData().setScale( 1.0f,1.0f);
+				lblUsuario.getData().setScale( 1.0f,1.0f);
+				lblCorreo.getData().setScale( 1.0f,1.0f);
+				lblPassword.getData().setScale( 1.0f,1.0f);
+				lblPassword2.getData().setScale( 1.0f,1.0f);
+				lblError.getData().setScale( 1.0f,1.0f);
+				System.out.println("andr");
+				break;
+			case Desktop:
+				// desktop specific code
+				lblID.getData().setScale( 0.7f,0.7f);
+				lblCorreo.getData().setScale( 0.7f,0.7f);
+				lblUsuario.getData().setScale( 0.7f,0.7f);
+				lblPassword.getData().setScale( 0.7f,0.7f);
+				lblPassword2.getData().setScale( 0.7f,0.7f);
+				lblError.getData().setScale( 0.7f,0.7f);
+				System.out.println("desk");
+				break;
+			default:
+				lblID.getData().setScale( 1.0f,1.0f);
+				lblCorreo.getData().setScale( 1.0f,1.0f);
+				lblUsuario.getData().setScale( 1.0f,1.0f);
+				lblPassword.getData().setScale( 1.0f,1.0f);
+				lblPassword2.getData().setScale( 1.0f,1.0f);
+				lblError.getData().setScale( 1.0f,1.0f);
+				break;
+		}
 	}
 
 	public void render (float delta){
 		Gdx.gl.glClearColor(0, 0, 0, (float) 0.5);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		btnGuardar.update();
+		btnAtras.update();
 		
 		batch.begin();		
 		batch.draw(texture, 0, 0, width, height);
 		btnGuardar.draw(batch);
+		btnAtras.draw(batch);
 		lblID.draw(batch, "ID", width/ 4,height / 2+(height / 7)*2 +txtNombre.getHeight());
 		lblUsuario.draw(batch, "Nombre", width / 4,height / 2+height / 7+txtNombre.getHeight());
 		lblCorreo.draw(batch, "Correo", width / 4,height / 2+txtNombre.getHeight() );	
@@ -90,8 +122,7 @@ public class NewUserScreen extends AbstractScreen  {
 	
 	
 	public void creacionBtns(){
-		TextureAtlas miTextura=new TextureAtlas(Gdx.files.internal("uiskin.json"));
-		Skin skin = new Skin(miTextura);
+		Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
 		
 		float anchuraBtn = width/2;
 		float alturaBtn = height/12;
@@ -137,5 +168,6 @@ public class NewUserScreen extends AbstractScreen  {
 		lblError.dispose();
 		lblPassword.dispose();
 		lblUsuario.dispose();
+		batch.dispose();
 	}
 }

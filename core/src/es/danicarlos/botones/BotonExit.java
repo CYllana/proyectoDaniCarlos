@@ -4,15 +4,28 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 
-public class BotonExit extends Boton { // Botón que permitirá salir del juego
+import es.danicarlos.ventanas.Screens;
 
-	public BotonExit(float centroXPantalla, float centroYPantalla) {
+public class BotonExit extends Boton { // Botón que permitirá salir del juego
+	private String nomb;
+	public BotonExit(float centroXPantalla, float centroYPantalla,String nomb) {
 		super(centroXPantalla, centroYPantalla);
-		texture = new Texture(Gdx.files.internal("close.png")); // Se asigna textura. Muy importante!!
+		this.nomb=nomb;
+		if (nomb.equals("EXIT")){
+			texture = new Texture(Gdx.files.internal("close.png")); // Se asigna textura. Muy importante!!
+		}else{
+			texture = new Texture(Gdx.files.internal("back2.png")); // Se asigna textura. Muy importante!!
+		}
 	}
 
 	@Override
 	protected void funcionamiento() {
-		Gdx.app.exit(); // Cierra la aplicación
+		if (nomb.equals("EXIT")){
+			Gdx.app.exit(); // Cierra la aplicación
+		}else if (nomb.equals("LOGIN")){
+			Screens.juego.setScreen(Screens.LOGINSCREEN);
+		}else{
+			Screens.juego.setScreen(Screens.MAINSCREEN);
+		}
 	}
 }

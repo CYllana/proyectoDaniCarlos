@@ -15,25 +15,13 @@ import es.danicarlos.proyecto.Juego;
 public class MainProyecto extends Game {
 	private static SpriteBatch batch;
 	
-	
-	/*public MainProyecto(SpriteBatch batch) {
-		super();
-		this.batch = batch;
-	}*/
-
-
-	/*public MainProyecto() {
-		// TODO Auto-generated constructor stub
-	}*/
-
-
 	@Override
 	public void create () {
 //		Gdx.input.setCatchBackKey(true); // Bloquea el boton "Back" de android para que se tenga que salir del juego usando el boton "Exit"
 		Screens.juego = this;
 		Gdx.graphics.setWindowedMode(460, 600);//Tamaño de pantalla
 		batch = new SpriteBatch();
-		//Screens.GAMESCREEN      = new Juego(this); // Se inicializan todas las pantallas
+		Screens.GAMESCREEN      = new Juego(this); // Se inicializan todas las pantallas
 		Screens.MAINSCREEN      = new MainScreen(this);
 		Screens.SCORESCREEN     = new ScoreScreen(this);
 		

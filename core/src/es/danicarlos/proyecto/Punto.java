@@ -84,7 +84,7 @@ public class Punto {
 
 	
 	private float radioAleatorio(){
-		double radioJuego=miJuego.getMiRueda().getRadio();
+		double radioJuego=miJuego.getMiRueda().getRadio()*0.8;
 		Random rnd=new Random();
 		double valor=rnd.nextDouble()*radioJuego-textura.getHeight();
 	
@@ -119,6 +119,7 @@ public class Punto {
 	public void update(){
 		if(colision()){
 			miJuego.setEstrellas(1);
+			miJuego.setTotalTime(8);
 			
 			this.x=miJuego.getWidth()/2+aleatorioX();
 			this.y=miJuego.getHeight()/2+aleatorioY();
