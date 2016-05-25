@@ -20,8 +20,11 @@ public class BotonExit extends Boton { // Botón que permitirá salir del juego
 
 	@Override
 	protected void funcionamiento() {
+		System.out.println("pasa");
 		if (nomb.equals("EXIT")){
-			Gdx.app.exit(); // Cierra la aplicación
+			System.out.println("pasa2");
+			Screens.juego.setScreen(Screens.MULTIPLAYERSCREEN);
+			//Gdx.app.exit(); // Cierra la aplicación
 		}else if (nomb.equals("LOGIN")){
 			Screens.juego.setScreen(Screens.LOGINSCREEN);
 		}else{

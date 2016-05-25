@@ -1,5 +1,6 @@
 package es.danicarlos.ventanas;
 
+import es.danicarlos.multiplayer.StartMultiplayerScreen;
 import es.danicarlos.proyecto.Juego;
 
 public class Screens {
@@ -10,4 +11,5 @@ public class Screens {
 	public static AbstractScreen LOGINSCREEN;  // Pantalla del Login
 	public static AbstractScreen NEWSCREEN;  // Pantalla del Creacion Usuario
 	public static AbstractScreen RECUPERARSCREEN;
+	public static AbstractScreen MULTIPLAYERSCREEN;
 }

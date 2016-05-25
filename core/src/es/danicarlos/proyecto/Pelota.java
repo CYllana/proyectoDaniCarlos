@@ -35,8 +35,6 @@ public class Pelota {
 
 	public Pelota(Sprite textura,float x, float y, Rueda miRueda, int numero){
 		this.textura= textura;
-		//bordes=new Circle(x,y, textura.getHeight());
-		//bordes= new Circle
 		this.miRueda=miRueda;
 		posicionX=x;
 		SPEED=2;
@@ -44,7 +42,6 @@ public class Pelota {
 		posicionY=y;
 		this.miRueda=miRueda;
 		radio=textura.getWidth()/2;
-		//this.miJuego=miRuego
 		bordes=new Circle(posicionX,posicionY, radio);
 		miVectorUni= new Vector2();
 		
@@ -67,8 +64,6 @@ public class Pelota {
 
 	public Pelota(Sprite textura,float x, float y, Juego miJuego){
 		this.textura= textura;
-		//bordes=new Circle(x,y, textura.getHeight());
-		//bordes= new Circle
 		posicionX=x;
 		posicionY=y;
 		radio=textura.getWidth()/2;
@@ -103,8 +98,6 @@ public class Pelota {
 	public Circle getBordes(){
 		return bordes;
 	}
-
-
 	public boolean isMenu() {
 		return menu;
 	}
@@ -171,20 +164,18 @@ public class Pelota {
 		movimientoPelota();
 		
 	}
+	
 	public boolean choqueRueda(){
-		
-
 		double distancia=distanciaPuntos(posicionX,posicionY,miRueda.getxCentro(),miRueda.getyCentro());
 		int retval = Double.compare(distancia,(double)miRueda.getRadio()-radio);	
 		if(retval>0){
-			
+			System.out.println("Print");
 			return true;
 		}
 		return false;
 	}
 
 	public static double distanciaPuntos(float x, float y, float centerX, float centerY){
-
 		double respuest;
 		double res1,res2;
 		res1=centerX-x;  
@@ -193,6 +184,7 @@ public class Pelota {
 		respuest=Math.sqrt(res1);
 		return respuest;
 	}
+	
 	private void movimientoPelota(){
 
 		//YELLOW, GREEN, RED, BLACK,BLUE, ORANGE;
@@ -241,17 +233,10 @@ public class Pelota {
 				}
 				*/
 				}else{
-					if(bt==1){
-						System.out.println("esta");
-						reboteAleatorio();
-					}else if(bt==2){
-						revoteHorizontal();
-											
-					}else{
-						revoteDiagonal();
-
-						
-					}
+					aleatorio();
+					ya=(float) (ya*0.5);
+					xa=(float) (xa*0.5);
+					
 					
 				}
 
