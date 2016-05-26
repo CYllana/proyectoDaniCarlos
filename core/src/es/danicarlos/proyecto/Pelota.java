@@ -35,6 +35,8 @@ public class Pelota {
 
 	public Pelota(Sprite textura,float x, float y, Rueda miRueda, int numero){
 		this.textura= textura;
+		//bordes=new Circle(x,y, textura.getHeight());
+		//bordes= new Circle
 		this.miRueda=miRueda;
 		posicionX=x;
 		SPEED=2;
@@ -42,6 +44,7 @@ public class Pelota {
 		posicionY=y;
 		this.miRueda=miRueda;
 		radio=textura.getWidth()/2;
+		//this.miJuego=miRuego
 		bordes=new Circle(posicionX,posicionY, radio);
 		miVectorUni= new Vector2();
 		
@@ -64,6 +67,8 @@ public class Pelota {
 
 	public Pelota(Sprite textura,float x, float y, Juego miJuego){
 		this.textura= textura;
+		//bordes=new Circle(x,y, textura.getHeight());
+		//bordes= new Circle
 		posicionX=x;
 		posicionY=y;
 		radio=textura.getWidth()/2;
@@ -98,6 +103,8 @@ public class Pelota {
 	public Circle getBordes(){
 		return bordes;
 	}
+
+
 	public boolean isMenu() {
 		return menu;
 	}
@@ -164,18 +171,20 @@ public class Pelota {
 		movimientoPelota();
 		
 	}
-	
 	public boolean choqueRueda(){
+		
+
 		double distancia=distanciaPuntos(posicionX,posicionY,miRueda.getxCentro(),miRueda.getyCentro());
 		int retval = Double.compare(distancia,(double)miRueda.getRadio()-radio);	
 		if(retval>0){
-			System.out.println("Print");
+			
 			return true;
 		}
 		return false;
 	}
 
 	public static double distanciaPuntos(float x, float y, float centerX, float centerY){
+
 		double respuest;
 		double res1,res2;
 		res1=centerX-x;  
@@ -184,7 +193,6 @@ public class Pelota {
 		respuest=Math.sqrt(res1);
 		return respuest;
 	}
-	
 	private void movimientoPelota(){
 
 		//YELLOW, GREEN, RED, BLACK,BLUE, ORANGE;
@@ -192,7 +200,7 @@ public class Pelota {
 		if(choqueRueda()){
 			
 			if(!menu){
-			int miColor=miRueda.bordercolor(getAngulo()).ordinal();	
+			Color miColor=miRueda.bordercolor(getAngulo());	
 			miJuego.setChoqueBola(true);
 			//System.out.println(modoRebote);
 			aleatorio();
@@ -230,13 +238,40 @@ public class Pelota {
 					reboteAleatorio();
 
 
+					private void rotateLeft() {
+		
+		img.setRotation((float) (img.getRotation() -0.5));
+		
+		//rotacion=rotacion-2;
+		miRueda.rotar(-2);
+		
+		
+
+	}
+	private void rotateRight() {
+
+		miRueda.setRotacion(2);
+		img.setRotation((float) (img.getRotation() +0.5));
+		miRueda.rotar(2);
+		rotacion=rotacion+2;
+	}
+
+
+
 				}
 				*/
 				}else{
-					aleatorio();
-					ya=(float) (ya*0.5);
-					xa=(float) (xa*0.5);
-					
+					if(bt==1){
+						System.out.println("esta");
+						reboteAleatorio();
+					}else if(bt==2){
+						revoteHorizontal();
+											
+					}else{
+						revoteDiagonal();
+
+						
+					}
 					
 				}
 
@@ -335,13 +370,13 @@ public class Pelota {
 			while(!valido){
 				if(!siguienteValido(xa,ya)){
 					xa=aleator();
-					System.out.println("Papayaaa");
+					//System.out.println("Papayaaa");
 					if(xa==0)ya=5*direccion();
 					if(xa==3)ya=4*direccion();
 					if(xa==4)ya=3*direccion();
 					if(xa==5)ya=0*direccion();
 					xa=xa*direccion();
-					System.out.println(xa+"  "+ya);
+					//System.out.println(xa+"  "+ya);
 
 				}else if((Math.sqrt(Math.pow(xa,2)+Math.pow(ya,2))==SPEED)){
 					valido=true;
@@ -362,9 +397,9 @@ public class Pelota {
 				if(xa==4)ya=3*direccion();
 				if(xa==5)ya=0*direccion();
 				xa=xa*direccion();
-				System.out.println(xa+"  "+ya);
+				//System.out.println(xa+"  "+ya);
 			}
-			System.out.println("ha salido");
+			//System.out.println("ha salido");
 			
 		}
 
@@ -378,7 +413,7 @@ public class Pelota {
 				System.out.println(xa+"  "+ya);
 
 			}
-			System.out.println("ha salido");
+			//System.out.println("ha salido");
 
 
 		}

@@ -127,7 +127,11 @@ public class Punto {
 			
 		}
 		
-		
+		/*
+		 * miRueda.draw(figurator, width, height);
+		 * 
+		 * 
+		 */
 	}
 	public boolean colision(){
 	

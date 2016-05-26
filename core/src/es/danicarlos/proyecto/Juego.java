@@ -1,6 +1,7 @@
 package es.danicarlos.proyecto;
 
 import java.util.ArrayList;
+
 import java.util.Random;
 
 import com.badlogic.gdx.ApplicationAdapter;
@@ -29,8 +30,6 @@ import es.danicarlos.ventanas.Screens;
 import es.danicarlos.ventanas.UsersScreen;
 
 public class Juego  extends AbstractScreen  {
-	private final static int WINDOW_WIDTH = 500;
-	private final static int WINDOW_HEIGHT	 = 500;
 	private SpriteBatch batch;
 	private Texture imgTexture, pelota, bIzq,bDer, punto, fondo,bPause, bRStart, bExit;
 	private int  height, width, xCirc, yCirc, xPelota, yPelota;
@@ -54,7 +53,7 @@ public class Juego  extends AbstractScreen  {
 	private BotonPause btPause;
 	private BotonRestart btRstart;
 	private BotonExitJuego btExit;
-	
+
 	static final int GAME_READY = 0;
 	static final int GAME_RUNNING = 1;
 	static final int GAME_PAUSED = 2;
@@ -70,7 +69,7 @@ public class Juego  extends AbstractScreen  {
 		font=new BitmapFont(Gdx.files.internal("comic.fnt"),Gdx.files.internal("comic.png"),false);
 		font2=new BitmapFont(Gdx.files.internal("comic.fnt"),Gdx.files.internal("comic.png"),false);
 		puntuacion=new BitmapFont(Gdx.files.internal("comic.fnt"),Gdx.files.internal("comic.png"),false);
-		
+
 		switch(Gdx.app.getType()) {
 		case Android:
 			// android specific code
@@ -89,14 +88,14 @@ public class Juego  extends AbstractScreen  {
 			font.getData().setScale( 1.0f,1.0f);
 
 			break;
-	}
-		
-		
-		
+		}
+
+
+
 		estrellas=0;
 		height=Gdx.graphics.getHeight();
 		width=Gdx.graphics.getWidth();
-		
+
 		choqueBola=false;
 		scale=height/width;
 		imgTexture = new Texture("miJuegoMenu.png");
@@ -125,7 +124,7 @@ public class Juego  extends AbstractScreen  {
 		punto =new Texture("punto.png");
 		bExit=new Texture("salirColor.png");
 		//Botones
-		
+
 		btPause=new BotonPause(30, height-70);
 		btIzq=new BotonGirar(bIzq, (-width/16)+width/8  ,width/12); 
 		btDer=new BotonGirar(bDer,-width/8+width-width/16, width/12);
@@ -134,11 +133,11 @@ public class Juego  extends AbstractScreen  {
 		//btIzq=new BotonGirar(bIzq, -(bIzq.getWidth()/2)+(width/7),width/12); 
 		//btDer=new BotonGirar(bDer,width-((bIzq.getWidth()/2)+(width/7)), width/12);
 		miRueda=new Rueda (img, width*19/43, width/2,height/2,this);
-		
-		
-		
-		
-		
+
+
+
+
+
 		misPuntos=miRueda.calculadorPosiciones(12,204,(width)/2,height/2);
 		pelotaSprite=new Sprite(pelota);
 		miPelota=new Pelota(pelotaSprite,width/2, height/2,this);
@@ -150,84 +149,89 @@ public class Juego  extends AbstractScreen  {
 		totalTime=0;
 		state=1;
 		tiempoIncr=0;
-	
+
 		//vectorColores
 		siguienteColor=new Color[2];
 		siguienteColor[1]=colorAleatorio();
 		siguienteColor[0]=colorAleatorio();
 		font.setColor(siguienteColor[1]);
-	
+		miRueda.setRuedaDentro(siguienteColor[1]);
+
 		//puntos
 		mispuntos=0;
 	}
 	//**********************************************
 
-				
+
 	@Override
 	public void render (float delta){	
-	
-	  
-	    
-	    switch (state) {
+
+
+
+		switch (state) {
 		case GAME_RUNNING:
 			updateRunning();
 			break;
 		case GAME_PAUSED:
 			updatePaused();
-			
+
 			break;
 		case GAME_OVER:
 			//updateGameOver();
 			break;
 		}    
-		
+
 		//Primero hacer updates y luego dibujar
-	
+
 		//El delta del movimiento pasarlo a traves del tiempo ( tutorial libgdx delta manbow2 )
-	
+
 
 	}
-	
+
 	//**********************************************
-	
+
 
 
 	private void updatePaused() {
 		figurator.begin(ShapeType.Line.Filled);
 		figurator.setColor(Color.BLACK); 
-		figurator.circle( width/2, height/2, width*19/43 );
+		figurator.circle( width/2, height/2, width*19/43,1000 );
 		figurator.end();
-		
+
 		batch.begin();
 		batch.draw(bRStart,-width/20-bRStart.getWidth()+width/2 ,(-bRStart.getHeight()+height)/2);
 		batch.draw(bExit,+width/20+width/2,(-bExit.getHeight()+height)/2);
 		batch.end();
 		actualizarStado();
-		
+
 	}
-	
+
 	//***********************************************************
 	private void updateRunning() {
 		// TODO Auto-generated method stub
 		//Pintamos el fondo
 		Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
-		
+		//Draws
+		batch.begin();
+		//Imagen de fondo
+		batch.draw(fondo, 0, 0,  Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		batch.end();
+
 		float deltaTime = Gdx.graphics.getDeltaTime(); //You might prefer getRawDeltaTime()
 
-	    totalTime -= deltaTime; //if counting down
+		totalTime -= deltaTime; //if counting down
 
-	    int seconds = ((int)totalTime) % 60;
-	    mispuntos=mispuntos+seconds;
-	    int tiempo=30+seconds+tiempoIncr;
-	    tiempoIncr=0;
-	    if(tiempo<0){
+		int seconds = ((int)totalTime) % 60;
+		mispuntos=mispuntos+seconds;
+		int tiempo=30+seconds+tiempoIncr;
+		tiempoIncr=0;
+		if(tiempo<0){
 			state=3;
 		}
-		
-		
-		
+
+
+
 		//Updates
 		actualizarRueda();
 		miPelota.update();
@@ -236,61 +240,42 @@ public class Juego  extends AbstractScreen  {
 		btPause.update();
 		actualizarStado();
 
-		//Draws
-		batch.begin();
-		//Imagen de fondo
-		batch.draw(fondo, 0, 0,  Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		//Puntuación
-		batch.end();
+
 
 		figurator.begin(ShapeType.Line.Filled);
 		figurator.setColor(Color.WHITE); 
 		figurator.circle( width/2, height-width/10, width/7);
 		figurator.end();
+		
 		batch.begin();
 		puntuacion.draw(batch, ""+tiempo, width-width/10, height-width/15);
-		//BOOTOON PAUSEEE
-		
-		
-		
 		//Nombre del color
 		font2.setColor(siguienteColor[0]);
 		float size2=tamañoString(font2,"Siguiente");
 		font2.draw(batch, "Siguiente", (-size2+width)/2, height-width/40);
-		
 		if(choqueBola){
-			if(colores[miRueda.bordercolor(miPelota.getAngulo()).ordinal()]==siguienteColor[1]){
-
-				
+			if(miRueda.bordercolor(miPelota.getAngulo()).equals(siguienteColor[1])){
+				miRueda.setRuedaDentro(siguienteColor[1]);
 				siguienteColor[1]=siguienteColor[0];
 				font.setColor(siguienteColor[1]);
 				siguienteColor[0]=colorAleatorio();
+				
 				//font.draw(batch, "Puntooooo", width/2, height-30);
 				totalTime=totalTime+5;
 			}else{
 				totalTime=totalTime-4;
 			}
-			
-			
-			//(colores[miRueda.bordercolor(miPelota.getAngulo()).ordinal()]
-		
 
 		}
 		choqueBola=false;
 		float size=tamañoString(font,"Color");
 		font.draw(batch, "Color", (-size+width)/2, height-width/16);
-		
-		figurator.begin(ShapeType.Line.Filled);
-		
-		figurator.setColor(Color.YELLOW); 
-		figurator.arc(width/2, height/2, 200, 0,50,100);
-		figurator.setColor(Color.BLACK); 
-		figurator.circle(width/2,height/2, 175,100);
-		figurator.circle( width-(height/20-(bIzq.getWidth()/2)+(width/7)), height/20+ width/12, height/20);
-		figurator.end();
+		batch.end();
+		miRueda.draw(figurator, width, height);
+		batch.begin();
 		//------Juego-----------------
 		//Circulo de juego
-		img.draw(batch);
+		//img.draw(batch);
 		//Pelota
 		
 		miPelota.draw(batch);
@@ -300,39 +285,36 @@ public class Juego  extends AbstractScreen  {
 		btDer.draw(batch);
 		btIzq.draw(batch);
 		batch.draw(bPause, 30,height-70);
-		
-		
+
+
 		batch.end();
-		figurator.begin(ShapeType.Line.Filled);
-		figurator.setColor(Color.BLACK); 
-		figurator.circle( miPelota.getPosicionX(), miPelota.getPosicionY(), 3);
-		figurator.end();
-		
-		
+	
+
+
 	}
-	
-	
-	
+
+
+
 	//**********************************************
-	
-	
+
+
 	public void actualizarStado(){
-	
-		
+
+
 		if(btPause.sePulsaElBoton()){
-			
+
 			state=2;
 			//Screens.juego.setScreen(Screens.LOGINSCREEN);
 			System.out.println("pause");
-		
-		
-		
+
+
+
 		}else if(btRstart.sePulsaElBoton()){
 			state=1;
 		}else if(btExit.sePulsaElBoton()){
 			Screens.juego.setScreen(Screens.MAINSCREEN);
 		}
-		
+
 	}
 
 
@@ -342,16 +324,17 @@ public class Juego  extends AbstractScreen  {
 		batch.dispose();
 		font.dispose();
 		puntuacion.dispose();
-		
+
 	}
 	private void rotateLeft() {
 
 		img.setRotation(img.getRotation() -2);
-
+		miRueda.rotar(-2);
 	}
 	private void rotateRight() {
 
 		img.setRotation(img.getRotation() + 2);
+		miRueda.rotar(+2);
 
 	}
 	synchronized public void actualizarRueda(){
@@ -366,8 +349,8 @@ public class Juego  extends AbstractScreen  {
 
 
 		}else if(Gdx.input.isKeyPressed(Input.Keys.LEFT)|| btIzq.sePulsaElBoton()){
-			
-			
+
+
 			rotateLeft();
 			miRueda.setRotacion(img.getRotation()-15);
 			figurator.begin(ShapeType.Line.Filled);
@@ -398,7 +381,7 @@ public class Juego  extends AbstractScreen  {
 	public void setWidth(int width) {
 		this.width = width;
 	}
-	
+
 
 	public int getState() {
 		return state;
@@ -482,7 +465,7 @@ public class Juego  extends AbstractScreen  {
 		Random rnd=new Random();
 		int valor=rnd.nextInt(6);
 		return colores[valor];
-		
+
 	}
 	private float tamañoString(BitmapFont bmap,String palabra){
 		GlyphLayout layout = new GlyphLayout();

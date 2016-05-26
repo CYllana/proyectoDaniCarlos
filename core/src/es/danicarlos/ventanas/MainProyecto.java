@@ -9,9 +9,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import es.danicarlos.multiplayer.MultiplayerGameScreen;
-import es.danicarlos.multiplayer.MultiplayerScreen;
-import es.danicarlos.multiplayer.StartMultiplayerScreen;
 import es.danicarlos.proyecto.Juego;
 
 
@@ -27,7 +24,6 @@ public class MainProyecto extends Game {
 		Screens.GAMESCREEN      = new Juego(this); // Se inicializan todas las pantallas
 		Screens.MAINSCREEN      = new MainScreen(this);
 		Screens.SCORESCREEN     = new ScoreScreen(this);
-		Screens.MULTIPLAYERSCREEN  = new MultiplayerGameScreen(this);
 		Screens.NEWSCREEN       = new NewUserScreen(this);
 		Screens.RECUPERARSCREEN = new RecuperarScreen(this);
 		Screens.LOGINSCREEN     = new UsersScreen(this);

@@ -2,9 +2,13 @@ package es.danicarlos.proyecto;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Random;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
@@ -15,15 +19,19 @@ public class Rueda {
 	private float xCentro, yCentro;
 	private ArrayList<Vector2> misPuntos;
 	private static final int DIVISIONES=12;
-	private float rotacion;
+	private double rotacion;
 	private HashMap<Integer, Color> map;
 	private Juego miJuego;
 	private float transportX, transportY;
 	private Color colorChoque;
+	private Quesito[] misQuesos;
+	private Color ruedaDentro;
+	
 	public enum miColor
 	{
 		YELLOW, GREEN, RED, BLACK,BLUE, ORANGE;
 	}
+	private ArrayList<Color> colores;
 	
 	public Rueda(Sprite miJuego, double radio, float xCentro, float yCentro) {
 		super();
@@ -32,12 +40,19 @@ public class Rueda {
 		this.xCentro=xCentro;
 		this.yCentro=yCentro;
 		calculadorPosiciones(DIVISIONES,radio,xCentro,yCentro);
+		colores= new ArrayList<Color>();
+		colores();
+		misQuesos=new Quesito[12];
+		rueda();
+		
+		
+		 
 	}
 
 
 	public Rueda(Sprite spriteRueda, double radio, float xCentro, float yCentro, Juego miJuego) {
 		super();
-
+		
 		img= spriteRueda;
 		this.radio=radio;
 		this.xCentro=xCentro;
@@ -46,14 +61,33 @@ public class Rueda {
 		rotacion=0;
 		this.miJuego=miJuego;
 		map = new HashMap<Integer, Color>();
-		map.put(1, Color.RED);		
-		map.put(2, Color.BLUE);		
-		map.put(3, Color.BLACK);	
-		map.put(4, Color.ORANGE);	
-		map.put(5, Color.YELLOW);		
-		map.put(6, Color.GREEN);
+		colores= new ArrayList<Color>();
+		colores();
+		misQuesos=new Quesito[12];
+		rueda();
 	}
+	public void draw(ShapeRenderer figurator, float width, float height){
+		//System.out.println(rotacion);
+		figurator.begin(ShapeType.Filled);
+		figurator.setColor(Color.BLACK); 
+		figurator.circle( width/2, height/2, width/2,210);
+		figurator.setColor(Color.YELLOW); 
+		
+		for(int i=0; i<misQuesos.length; i++){
+			figurator.setColor(misQuesos[i].getColor());
+			figurator.arc(width/2, height/2, width*11/23, misQuesos[i].getAnguloInicio(),30,1000);
+			
+		}
+		
+		figurator.setColor(ruedaDentro); 
+		figurator.circle( width/2, height/2, width*19/43,1000);
+		figurator.end();
+		figurator.begin(ShapeType.Line);
+		figurator.setColor(Color.BLACK); 
+		figurator.circle( width/2, height/2, width*19/43,1000);
+		figurator.end();
 
+	}
 
 
 	public Sprite getImg() {
@@ -72,6 +106,7 @@ public class Rueda {
 	public ArrayList<Vector2> getMisPuntos(float centrox, float centroy) {
 		return calculadorPosiciones(12, DIVISIONES, centrox, centroy);
 	}
+	
 
 
 
@@ -80,9 +115,15 @@ public class Rueda {
 	}
 
 
+	
+	public Color getRuedaDentro() {
+		return ruedaDentro;
+	}
 
 
-
+	public void setRuedaDentro(Color ruedaDentro) {
+		this.ruedaDentro = ruedaDentro;
+	}
 
 
 	public float getTransportX() {
@@ -92,7 +133,7 @@ public class Rueda {
 
 
 	public void setTransportX(float transportX) {
-		this.transportX = transportX+this.rotacion;
+		this.transportX = (float) (transportX+this.rotacion);
 	}
 
 
@@ -152,15 +193,15 @@ public class Rueda {
 
 
 
-	public float getRotacion() {
+	public double getRotacion() {
 		return rotacion;
 	}
 
 
 
-	public void setRotacion(float rotacion) {
+	public void setRotacion(double d) {
 
-		this.rotacion=rotacion%360;
+		this.rotacion=d%360;
 
 	}
 
@@ -188,10 +229,57 @@ public class Rueda {
 		return misPuntos;
 
 	}
-	public miColor bordercolor(double anguloPelota){
+	public void colores(){
+		 Color[] miscolores={Color.YELLOW, Color.GREEN, Color.RED, Color.BLACK,Color.BLUE, Color.ORANGE,Color.YELLOW, Color.GREEN, Color.RED, Color.BLACK,Color.BLUE, Color.ORANGE};
+		 for (int i=0; i<miscolores.length; i++){
+			 colores.add(miscolores[i]);
+		 }
+	
+	}
+	public void rueda(){
+		for(int i=0; i<12; i++){
+			Random rnd=new Random();
+			int num=rnd.nextInt(colores.size());
+			misQuesos[i]=new Quesito(i*30,i*30+30, colores.get(num));
+			colores.remove(num);
+		}
+	}
 
-
-		if(rotacion<60&&rotacion>-120){
+	
+	public void rotar(float rotacion){
+		
+		for(int i=0; i<12; i++){
+			
+			misQuesos[i].actualizarPosicion(rotacion);
+			
+			
+			
+		}
+	}
+	public Color bordercolor(double anguloPelota){
+		int i=0;
+		
+			while(!misQuesos[i].perteneceAlQuesito(anguloPelota)){
+			
+			i++;
+			
+			if(i>11){
+				System.out.println(misQuesos[1].getRotacion());
+				for(int j=0; j<12; j++){
+					
+					System.out.println(j+misQuesos[j].toString()+"  angulo pelota="+anguloPelota);
+					
+					
+					
+				}
+				return Color.BLACK;
+			}
+			
+		}
+		//System.out.println(anguloPelota);
+		return misQuesos[i].getColor();
+		
+		/*if(rotacion<60&&rotacion>-120){
 			if(anguloPelota>=0 +rotacion&& anguloPelota<30+rotacion){
 				return miColor.YELLOW;
 			}else 	if(anguloPelota>=30+rotacion && anguloPelota<60+rotacion){
@@ -312,6 +400,8 @@ public class Rueda {
 			return miColor.BLACK;
 
 		}
+		*/
+
 
 
 

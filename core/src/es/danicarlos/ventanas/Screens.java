@@ -1,7 +1,5 @@
 package es.danicarlos.ventanas;
 
-import es.danicarlos.multiplayer.StartMultiplayerScreen;
-import es.danicarlos.proyecto.Juego;
 
 public class Screens {
 	public static MainProyecto juego; // Objeto de la clase principal del juego. Nos sirve para cambiar de una pantalla a otra
