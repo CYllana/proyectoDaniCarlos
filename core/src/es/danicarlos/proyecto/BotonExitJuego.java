@@ -7,7 +7,7 @@ public class BotonExitJuego extends Boton{
 
 	public BotonExitJuego(float centroXPantalla, float centroYPantalla) {
 		super(centroXPantalla, centroYPantalla);
-		texture = new Texture(Gdx.files.internal("salirColor.png")); // Se asigna textura. Muy importante!!
+		
 	}
 
 	@Override

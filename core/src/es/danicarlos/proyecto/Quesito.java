@@ -51,7 +51,7 @@ public class Quesito {
 		return "Quesito [anguloInicio=" + anguloInicio + ", angulofinal=" + angulofinal + ", color=" + color + "rotacion="+rotacion+"]";
 	}
 	
-	public void actualizarPosicion(double rotacion){
+	public synchronized void actualizarPosicion(double rotacion){
 		if(rotacion<0){
 			this.anguloInicio=(float) (this.anguloInicio+rotacion);
 			this.angulofinal=(float) (this.angulofinal+rotacion);

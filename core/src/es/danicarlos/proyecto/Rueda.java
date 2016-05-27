@@ -69,7 +69,7 @@ public class Rueda {
 	public void draw(ShapeRenderer figurator, float width, float height){
 		//System.out.println(rotacion);
 		figurator.begin(ShapeType.Filled);
-		figurator.setColor(Color.BLACK); 
+		figurator.setColor(ruedaDentro); 
 		figurator.circle( width/2, height/2, width/2,210);
 		figurator.setColor(Color.YELLOW); 
 		
@@ -79,7 +79,7 @@ public class Rueda {
 			
 		}
 		
-		figurator.setColor(ruedaDentro); 
+		figurator.setColor(Color.WHITE); 
 		figurator.circle( width/2, height/2, width*19/43,1000);
 		figurator.end();
 		figurator.begin(ShapeType.Line);

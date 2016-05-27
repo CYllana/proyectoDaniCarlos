@@ -12,14 +12,18 @@ public abstract class Boton {
 	protected float yMinima;
 	protected float xMaxima;
 	protected float yMaxima;
+	private float width=Gdx.graphics.getWidth();
+	private float height=Gdx.graphics.getHeight();
 	public Boton(float centroXPantalla, float centroYPantalla) {
-		bordes = new Rectangle(centroXPantalla, centroYPantalla,75,75); //textura.getWidth(), textura.getHeight());	
+		bordes = new Rectangle(centroXPantalla, centroYPantalla,height/8,height/8); //textura.getWidth(), textura.getHeight());	
 		// Permite asignar los bordes del botón para su correcto funcionamiento.
 		xMinima = bordes.x;
 		yMaxima = Gdx.graphics.getHeight() - bordes.y;
 		xMaxima = bordes.x + bordes.width;
 		yMinima = Gdx.graphics.getHeight() - (bordes.y + bordes.height);
 	}
+	
+	
 	public Boton(float centroXPantalla, float centroYPantalla,String nomb) {
 		if (nomb.equals("Validar")) {
 		} else if (nomb.equals("NewRec")) {

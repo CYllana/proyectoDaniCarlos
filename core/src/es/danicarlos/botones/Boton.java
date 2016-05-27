@@ -16,12 +16,34 @@ public abstract class Boton {
 	protected float width = Gdx.graphics.getWidth();
 	
 	public Boton(float centroXPantalla, float centroYPantalla) {
-		bordes = new Rectangle(centroXPantalla, centroYPantalla,75,75); //textura.getWidth(), textura.getHeight());	
+	
+		bordes = new Rectangle(centroXPantalla, centroYPantalla,height/10,height/10); //textura.getWidth(), textura.getHeight());	
 		// Permite asignar los bordes del botón para su correcto funcionamiento.
-		xMinima = bordes.x;
-		yMaxima = height - bordes.y;
-		xMaxima = bordes.x + bordes.width;
-		yMinima = height - (bordes.y + bordes.height);
+		/*switch(Gdx.app.getType()) {
+		case Android:
+			xMinima = bordes.x*2;
+			yMaxima = height - bordes.y*2;
+			xMaxima = bordes.x + bordes.width*2;
+			yMinima = height - (bordes.y + bordes.height);
+
+			break;
+		case Desktop:
+			xMinima = bordes.x;
+			yMaxima = height - bordes.y;
+			xMaxima = bordes.x + bordes.width;
+			yMinima = height - (bordes.y + bordes.height);
+
+
+			break;
+		default:
+			xMinima = bordes.x;
+			yMaxima = height - bordes.y;
+			xMaxima = bordes.x + bordes.width;
+			yMinima = height - (bordes.y + bordes.height);
+		
+			break;
+		}*/
+	
 	}
 	public Boton(float centroXPantalla, float centroYPantalla,String nomb) {
 		if (nomb.equals("NEW") || nomb.equals("RECUPERAR")) {
@@ -44,6 +66,7 @@ public abstract class Boton {
 	}
 
 	public void draw(SpriteBatch batch) {
+		
 		batch.draw(texture, bordes.x, bordes.y, bordes.width, bordes.height);
 	}
 
