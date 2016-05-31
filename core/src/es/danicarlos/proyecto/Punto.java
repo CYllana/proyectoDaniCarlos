@@ -9,49 +9,49 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 public class Punto {
-	private float x,y, radio;
+	/**
+	 * Vectir2, con la posición del punto
+	 */
+	private Vector2 posicion;
+	/**
+	 * Valor del radio de la estrella(imagen).
+	 */
+	private float radio;
+	/**
+	 * Variable que nos conecta con el Juego actual.
+	 */
 	private Juego miJuego;
+	/**
+	 * Sprite(imagen) asociado a nuestro punto
+	 */
 	private Sprite textura;
+	/**
+	 * Figura a la que asignaremos nuestra imagen, con ella cálcularemos la colisión.
+	 */
 	private Circle bordes;	
 	
-
+	private float 	tiempoActual;
+	private boolean dibujar;
 	
-	
+	/**
+	 *Contstrucor al cual le pasamos la imagen asociada al punto y el juego actual.En este constructor
+	 *se calcula una posición aleatoria para nuestro punto.
+	 */
 	public Punto(Sprite textura,Juego miJuego) {
 		this.textura=textura;
 		this.miJuego=miJuego;
 		this.radio=textura.getHeight();
 		textura.setCenterX(radio);
-		this.x=(+textura.getWidth()+miJuego.getWidth())/2+aleatorioX();
+		posicion=new Vector2(((-textura.getWidth()+miJuego.getWidth())/2+aleatorioX()),(-textura.getWidth()+miJuego.getHeight())/2+aleatorioY());
 		
-		this.y=(+textura.getWidth()+miJuego.getHeight())/2+aleatorioY();
-		this.textura.setCenter(x, y);
+		this.textura.setCenter(posicion.x, posicion.y);
 		this.textura.setOriginCenter();
-		bordes=new Circle(x,y,textura.getWidth()/2);
+		bordes=new Circle(posicion.x,posicion.y,textura.getWidth()/2);
+		dibujar=true;
+		
 	}
 
-	public Punto(float x, float y) {
-		super();
-		this.x = x;
-		this.y = y;
-	}
 
-	public float getX() {
-		return x;
-	}
-
-	public void setX(float x) {
-		this.x = x;
-	}
-
-	public float getY() {
-		return y;
-	}
-
-	public void setY(float y) {
-		this.y = y;
-	}
-	
 	
 	
 	public Circle getBordes() {
@@ -62,26 +62,10 @@ public class Punto {
 		this.bordes = bordes;
 	}
 
-	public static double distanciaPuntos(float x, float y, float centerX, float centerY){
-		
-		double respuest;
-		double res1,res2;
-		res1=centerX-x;  
-		res2=centerY-y;
-	    res1=Math.pow(res1, 2)+Math.pow(res2, 2);
-	    respuest=Math.sqrt(res1);
-	    return respuest;
-	}
-	public Vector2 nuevaPosicion(){
-		double radioJuego= miJuego.getMiRueda().getRadio();
-		float xCentral=miJuego.getMiRueda().getxCentro();
-		float yCentral=miJuego.getMiRueda().getyCentro();
-		
-		return null;
-		
-		
-	}
-
+	/**
+	 * Nos calcla un radio o posición en la cual se  encontrará nuestro punto. 
+	 * @return
+	 */
 	
 	private float radioAleatorio(){
 		double radioJuego=miJuego.getMiRueda().getRadio()*0.8;
@@ -90,17 +74,36 @@ public class Punto {
 	
 		return (float)valor;
 	}
+	/**
+	 * calcula valor entre 0 y 360
+	 * @return ángulo aleatorio
+	 */
 	private float anguloAleatorio(){
 		
 		Random rnd=new Random();
 		float valor=rnd.nextInt(360);
 		return valor;
 	}
+	/**
+	 * Método que utiliza los dos métodos vistos con anterioridad, primero nos cálcula una distancia aleatoria. 
+	 * A continuación calcula un angulo aleatorio. Depsués trigometricamente lo multiplicamos y obtenemos una 
+	 * posición aleatoria x
+	 * @return posición aleatoria X
+	 */ 
 	private float aleatorioX(){
 		float radioJuego=radioAleatorio();
 		float angulo=anguloAleatorio();
 		return radioJuego*MathUtils.sinDeg(angulo);
 	}
+	/**
+	 * Método que utiliza los dos métodos vistos con anterioridad, primero nos cálcula una distancia aleatoria. 
+	 * A continuación calcula un angulo aleatorio. Depsués trigometricamente lo multiplicamos y obtenemos una 
+	 * posición aleatoria y
+	 * @return posición aleatoria Y
+	 * 
+	 * @return
+	 */
+	
 	private float aleatorioY(){
 		float radioJuego=radioAleatorio();
 		float angulo=anguloAleatorio();
@@ -109,30 +112,46 @@ public class Punto {
 	
 	
 	
-	
+	/**
+	 * Método utilizado en libgdx para dibujar nuestro punto
+	 * @param batch
+	 */
 	public void draw(SpriteBatch batch){
-		
-		batch.draw(textura,x-textura.getHeight()/2,y-textura.getHeight()/2 );
+		if(dibujar)batch.draw(textura,posicion.x-textura.getHeight()/2,posicion.y-textura.getHeight()/2 );
 	}
 	
-	//Regular el tiempo con milisegundos para que tenga una velocidad fija para todas las maquinas
-	public void update(){
+	/**
+	 * Actualizamos la posición de nuestro punto dependiendo si la pelota ha colisionado con el.
+	 * Si la pelota ha colisionado con el area(borde)  de nuestro punto, asignamos al juego que una estrella ha sido capturada,
+	 * También le recompensamos por esta acción con 7 segundos.
+	 * A continuación actualizamos a una nueva posición.
+	 */
+	public void update(float segundos){
 		if(colision()){
 			miJuego.setEstrellas(1);
-			miJuego.setTotalTime(8);
-			
-			this.x=miJuego.getWidth()/2+aleatorioX();
-			this.y=miJuego.getHeight()/2+aleatorioY();
-			bordes.setPosition(x, y);
+			miJuego.setTotalTime(7);	
+			tiempoActual=segundos;	
+			dibujar=false;
 			
 		}
+
+		//System.out.println((-segundos)+ "       "+(-tiempoActual));
+
+		if(!dibujar&&((-segundos)>(-tiempoActual+2))){
+			
+			tiempoActual=0;
+			posicion.x=miJuego.getWidth()/2+aleatorioX();
+			posicion.y=miJuego.getHeight()/2+aleatorioY();
+			bordes.setPosition(posicion.x, posicion.y);
+			dibujar=true;
+		}
 		
-		/*
-		 * miRueda.draw(figurator, width, height);
-		 * 
-		 * 
-		 */
 	}
+	/**
+	 * Método utilizando facilidades de libgdx, que nos devuelve tru or false si los bordes de la estrella y
+	 * la pelota chocan.
+	 * @return
+	 */
 	public boolean colision(){
 	
 		return bordes.overlaps(miJuego.getMiPelota().getBordes());

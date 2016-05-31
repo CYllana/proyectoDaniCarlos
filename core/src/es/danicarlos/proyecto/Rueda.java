@@ -1,6 +1,7 @@
 package es.danicarlos.proyecto;
 
 import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Random;
@@ -12,6 +13,11 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
+/**
+ * Esta clase 
+ * @author Carlos Yllana y Daniel Ibañez
+ *
+ */	
 public class Rueda {
 
 	private  Sprite img;
@@ -27,10 +33,7 @@ public class Rueda {
 	private Quesito[] misQuesos;
 	private Color ruedaDentro;
 	
-	public enum miColor
-	{
-		YELLOW, GREEN, RED, BLACK,BLUE, ORANGE;
-	}
+
 	private ArrayList<Color> colores;
 	
 	public Rueda(Sprite miJuego, double radio, float xCentro, float yCentro) {
@@ -78,7 +81,6 @@ public class Rueda {
 			figurator.arc(width/2, height/2, width*11/23, misQuesos[i].getAnguloInicio(),30,1000);
 			
 		}
-		
 		figurator.setColor(Color.WHITE); 
 		figurator.circle( width/2, height/2, width*19/43,1000);
 		figurator.end();
@@ -106,85 +108,46 @@ public class Rueda {
 	public ArrayList<Vector2> getMisPuntos(float centrox, float centroy) {
 		return calculadorPosiciones(12, DIVISIONES, centrox, centroy);
 	}
-	
-
-
 
 	public void setMisPuntos(ArrayList<Vector2> misPuntos) {
 		this.misPuntos = misPuntos;
 	}
-
-
-	
 	public Color getRuedaDentro() {
 		return ruedaDentro;
 	}
-
-
 	public void setRuedaDentro(Color ruedaDentro) {
 		this.ruedaDentro = ruedaDentro;
 	}
-
-
 	public float getTransportX() {
 		return transportX;
 	}
-
-
-
 	public void setTransportX(float transportX) {
 		this.transportX = (float) (transportX+this.rotacion);
 	}
-
-
-
 	public float getTransportY() {
 		return transportY;
 	}
-
-
-
 	public void setTransportY(float transportY) {
 		this.transportY = transportY;
 	}
-
-
-
 	public double getRadio() {
 		return radio;
 	}
-
-
-
 	public void setRadio(double radio) {
 		this.radio = radio;
 	}
-
-
-
 	public float getxCentro() {
 		return xCentro;
 	}
-
-
-
 	public void setxCentro(float xCentro) {
 		this.xCentro = xCentro;
 	}
-
-
-
 	public float getyCentro() {
 		return yCentro;
 	}
-
-
-
 	public void setyCentro(float yCentro) {
 		this.yCentro = yCentro;
 	}
-
-
 
 	public ArrayList<Vector2> getMisPuntos() {
 		return misPuntos;
@@ -267,7 +230,7 @@ public class Rueda {
 				System.out.println(misQuesos[1].getRotacion());
 				for(int j=0; j<12; j++){
 					
-					System.out.println(j+misQuesos[j].toString()+"  angulo pelota="+anguloPelota);
+					//System.out.println(j+misQuesos[j].toString()+"  angulo pelota="+anguloPelota);
 					
 					
 					

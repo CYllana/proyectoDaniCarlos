@@ -1,9 +1,9 @@
-package es.danicarlos.proyecto;
+package es.danicarlos.botones;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 
-public class BotonPause extends Boton{
+public class BotonPause extends Botonc{
 
 	public BotonPause(float centroXPantalla, float centroYPantalla) {
 		super(centroXPantalla, centroYPantalla);
@@ -19,7 +19,7 @@ public class BotonPause extends Boton{
 		
 		
 	}
-	protected boolean sePulsaElBoton() { // Esta función privada sirve para comprobar si se pulsa el botón.
+	public boolean sePulsaElBoton() { // Esta función privada sirve para comprobar si se pulsa el botón.
 		return Gdx.input.isTouched() && Gdx.input.getX() >= xMinima && Gdx.input.getX() <= xMaxima && // Devuelve true si se pulsa dentro de los límites
 				Gdx.input.getY() >= yMinima && Gdx.input.getY() <= yMaxima;
 	}

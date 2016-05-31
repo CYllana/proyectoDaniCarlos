@@ -1,11 +1,11 @@
-package es.danicarlos.proyecto;
+package es.danicarlos.botones;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
-public abstract class Boton {
+public abstract class Botonc {
 	protected Texture texture;
 	protected Rectangle bordes;
 	protected float xMinima;
@@ -14,7 +14,7 @@ public abstract class Boton {
 	protected float yMaxima;
 	private float width=Gdx.graphics.getWidth();
 	private float height=Gdx.graphics.getHeight();
-	public Boton(float centroXPantalla, float centroYPantalla) {
+	public Botonc(float centroXPantalla, float centroYPantalla) {
 		bordes = new Rectangle(centroXPantalla, centroYPantalla,height/8,height/8); //textura.getWidth(), textura.getHeight());	
 		// Permite asignar los bordes del botón para su correcto funcionamiento.
 		xMinima = bordes.x;
@@ -24,7 +24,7 @@ public abstract class Boton {
 	}
 	
 	
-	public Boton(float centroXPantalla, float centroYPantalla,String nomb) {
+	public Botonc(float centroXPantalla, float centroYPantalla,String nomb) {
 		if (nomb.equals("Validar")) {
 		} else if (nomb.equals("NewRec")) {
 		}
